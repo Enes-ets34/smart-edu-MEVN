@@ -1,4 +1,15 @@
-console.log("Hello express");
+const express = require("express");
 
-console.log("dev-enes 2");
-console.log("huloo");
+const app = express();
+
+const PORT = 3000;
+
+
+
+
+
+
+
+app.listen(PORT, () => {
+  console.log(`Server Is Runnig at ${PORT}`);
+});
