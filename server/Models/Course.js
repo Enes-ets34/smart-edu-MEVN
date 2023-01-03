@@ -6,6 +6,11 @@ const Schema = mongoose.Schema;
 const courseSchema = new Schema({
   title: { type: String, required: true, trim: true },
   description: { type: String, required: true, trim: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Category",
+  },
   teacher: { type: String, required: true },
   thumbnail: String,
   created_at: { type: Date, default: Date.now() },
@@ -16,7 +21,7 @@ courseSchema.pre("validate", function (next) {
     lower: true,
     strict: true,
   });
-  next()
+  next();
 });
 
 const Course = mongoose.model("Course", courseSchema);
