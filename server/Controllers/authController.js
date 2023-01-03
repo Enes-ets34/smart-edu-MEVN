@@ -65,10 +65,20 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
-
+const getDashboardPage = async (req, res) => {
+  const user = await User.findOne({ _id: req.session.userID });
+  if (user) {
+    res.status(200).send({
+      user,
+    });
+  } else {
+    res.status(403).send("YOU ARE NOT AUTHORIZED");
+  }
+};
 module.exports = {
   getAllUsers,
   register,
   login,
-  logout
+  logout,
+  getDashboardPage,
 };
