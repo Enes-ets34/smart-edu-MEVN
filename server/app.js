@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 
+const MongoStore = require("connect-mongo");
+const session = require("express-session");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -31,6 +33,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //ROUTES
+app.use(
+  session({
+    secret: "sessionB!tch",
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: "mongodb://localhost/smart-edu-test" }),
+  })
+);
 app.use("/", pageRoutes);
 app.use("/courses", courseRoutes);
 app.use("/categories", categoryRoutes);

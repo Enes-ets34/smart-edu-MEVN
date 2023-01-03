@@ -1,4 +1,7 @@
 const User = require("../Models/User");
+const CryptoJS = require("crypto-js");
+const session = require("express-session");
+const _saltKey = "passB!tch";
 
 const register = async (req, res) => {
   try {
@@ -6,17 +9,47 @@ const register = async (req, res) => {
     console.log("req.body.password :>> ", userData.password);
     console.log("userData :>> ", userData);
 
-    const User = await User.create(userData);
+    const user = await User.create(userData);
     res.status(201).json({
       status: "success",
-      User,
+      user,
     });
   } catch (error) {
     res.status(400).json({
       status: "fail",
       error,
     });
+    console.error(error);
   }
+};
+const login = async (req, res) => {
+  try {
+    const userData = req.body;
+    const user = await User.findOne({ email: userData.email });
+    if (user) {
+      userData.password = CryptoJS.HmacSHA1(
+        userData.password,
+        _saltKey
+      ).toString();
+    }
+    if (user.password === userData.password) {
+      req.session.userID = user._id;
+      res.status(200).send("YOU ARE LOGGED IN");
+    } else {
+      res.status(400).send("INCORRECT PASSWORD OR EMAIL");
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+    console.error(error);
+  }
+};
+const logout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
 };
 const getAllUsers = async (req, res) => {
   try {
@@ -34,6 +67,8 @@ const getAllUsers = async (req, res) => {
 };
 
 module.exports = {
-  register,
   getAllUsers,
+  register,
+  login,
+  logout
 };
