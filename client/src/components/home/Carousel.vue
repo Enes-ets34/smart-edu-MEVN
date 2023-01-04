@@ -12,10 +12,10 @@
                     </p>
                     <div class="col-md-3 d-flex justify-content-between align-items-center">
                         <button class="btn btn-sm btn-warning">Contact Us</button>
-                        <button class="btn btn-sm btn-secondary">About Us</button>
+                        <router-link to="/about" tag="button" class="btn btn-sm btn-secondary">About Us</router-link>
                     </div>
                 </div>
-                <div class="col-md-4 ms-auto">
+                <div class="col-md-4 ms-auto d-none d-sm-block d-md-none d-lg-block ">
                     <img src="//d9hhrg4mnvzow.cloudfront.net/join.codecademy.com/learn/paths/code-foundations/3021fe69-curriculum-card-1.svg"
                         alt="" class="img-fluid">
                 </div>
