@@ -1,13 +1,12 @@
-import { createStore } from "vuex";
 import appAxios from "../../utils/appAxios";
 
-export default createStore({
+export default {
   namespaced: true,
   state: {
     courseList: [],
   },
   mutations: {
-    setCourseList({ state }, pCourses) {
+    setCourseList(state, pCourses) {
       state.courseList = pCourses;
     },
   },
@@ -16,8 +15,7 @@ export default createStore({
       appAxios
         .get("/courses")
         .then((res) => {
-          commit("setCourseList", res.data);
-          console.log("res >> ", res);
+          commit("setCourseList", res.data.courses);
         })
         .catch((err) => {
           console.error(err);
@@ -27,5 +25,6 @@ export default createStore({
   modules: {},
   getters: {
     getCourses: (state) => state.courseList,
+    getLatestCourses: (state) => state.courseList.slice(0,3),
   },
-});
+};

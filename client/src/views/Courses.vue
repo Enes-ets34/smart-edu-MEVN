@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Carousel />
+    <Carousel :content="`courses`" :image="`https://static-assets.codecademy.com/components/curriculum/path/build-web-apps-with-react/curriculum-card.svg`" />
     <div class="container my-5">
       <div class="col-md-12 mx-auto">
         <div class="row">

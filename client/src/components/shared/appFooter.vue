@@ -1,5 +1,6 @@
 <template>
-    <div class="container">
+
+    <div v-if="!hider" class="mt-5 container">
         <footer class="py-5">
             <div class="row">
                 <div class="col-6 col-md-2 mb-3">
@@ -68,7 +69,11 @@
 
 <script>
 export default {
-
+    computed: {
+        hider() {
+            return this.$route.name === 'Login' || this.$route.name === 'Register'
+        }
+    }
 }
 </script>
 

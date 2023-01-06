@@ -1,12 +1,12 @@
 <template>
     <div class="col-md-5 d-flex align-self-stretch mb-3">
         <div  class="card ">
-            <div class="card-header">
+            <div class="card-header text-center">
                 <img :src="courseImg" alt="" class="img-fluid">
             </div>
             <div class="card-body">
                 <div class="card-title">
-                    <router-link class="text-decoration-none" tag="h3" to="/course">
+                    <router-link class="text-decoration-none" tag="h3" :to="`/course/${course.slug}`">
                         <h3>{{ course.title }}</h3>
                     </router-link>
                 </div>
