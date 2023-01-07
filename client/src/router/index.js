@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store/index";
+import { isObject } from "util";
+
 import Home from "../views/Home.vue";
 import appFooter from "../components/shared/appFooter.vue";
 import appNavbar from "../components/shared/appNavbar.vue";
@@ -76,6 +79,25 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const authenticatedPages = ["Dashboard", "Profile"];
+  let user = null;
+  if (localStorage?.user) {
+    user = JSON.parse(localStorage?.user);
+  }
+  if (isObject(user)) {
+    store.commit("users/setUser", user);
+  }
+  const isAuth = store.getters["users/isAuth"];
+  if (!isAuth && authenticatedPages.indexOf(to.name) > -1) {
+    next({ name: "Login" });
+  }
+  if ((isAuth && to.name === "Login") || (isAuth && to.name === "Register")) {
+    next({ name: "Home" });
+  }
+  next();
 });
 
 export default router;

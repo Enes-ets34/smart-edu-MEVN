@@ -8,15 +8,17 @@
                 <div class="form-group">
                     <div class="mb-3">
                         <label for="email">Email</label>
-                        <input type="text" name="email" id="email" placeholder="Enter Your Email" class="form-control ">
+                        <input v-model="userData.email" type="text" name="email" id="email"
+                            placeholder="Enter Your Email" class="form-control ">
                     </div>
                     <div class="mb-3">
                         <label for="password">Password</label>
-                        <input type="text" name="password" id="password" placeholder="*****" class="form-control">
+                        <input v-model="userData.password" type="password" name="password" id="password"
+                            placeholder="*****" class="form-control">
                     </div>
                 </div>
                 <div class="d-grid gap-2 mt-3">
-                    <button class="btn btn-primary">
+                    <button @click="login" class="btn btn-primary">
                         Login
                     </button>
                 </div>
@@ -31,6 +33,16 @@
 
 <script>
 export default {
+    data() {
+        return {
+            userData: {}
+        }
+    },
+    methods: {
+        login() {
+            this.$store.dispatch("users/login", this.userData)
+        }
+    }
 
 }
 </script>

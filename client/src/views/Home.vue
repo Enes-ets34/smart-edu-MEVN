@@ -1,12 +1,8 @@
 <template>
   <div>
-
-
     <Carousel :image="`https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg`" :content='`Enroll a Course For Free. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
     consectetur, adipisicing elit. Rerum aliquam inventore facere temporibus eligendi.
     Reprehenderit?`' />
-
-
     <div class="row">
       <div class="col-md-6 mx-auto text-center my-5 p-2">
         <h1 class="text-dark">Latest Courses</h1>
@@ -17,8 +13,7 @@
 
     <div class="row">
       <div class="col-md-10 mx-auto p-4 ">
-        <div v-for="(course, index) in latestCourses" :key="course._id"
-          class="my-2 card mb-3 bg-light p-2">
+        <div v-for="(course, index) in latestCourses" :key="course._id" class="my-2 card mb-3 bg-light p-2">
           <div class="row g-0 align-items-center">
             <div class="col-md-4 mx-auto" :class="{ 'order-1 text-end': index % 2 === 0 }">
 
@@ -116,7 +111,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      latestCourses: "courses/getLatestCourses"
+      latestCourses: "courses/getLatestCourses",
+      currentUser: "users/getCurrentUser"
     })
   },
   mounted() {

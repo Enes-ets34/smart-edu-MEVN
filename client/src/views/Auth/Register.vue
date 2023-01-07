@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="card-footer text-center">
-                <router-link to="/register" class="text-secondary">Have You Account? Click for
+                <router-link to="/login" class="text-secondary">Have You Account? Click for
                     login.</router-link>
             </div>
         </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import appAxios from '../../utils/appAxios';
+
 
 export default {
     data() {
@@ -57,9 +57,7 @@ export default {
     },
     methods: {
         register() {
-            appAxios.post("/users/signup", { ...this.userData })
-                .then(res => console.log('res >> ', res))
-                .catch(err => console.error(err))
+            this.$store.dispatch("users/register", this.userData)
         }
     }
 
