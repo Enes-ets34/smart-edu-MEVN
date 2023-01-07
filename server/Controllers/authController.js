@@ -34,7 +34,10 @@ const login = async (req, res) => {
     }
     if (user.password === userData.password) {
       req.session.userID = user._id;
-      res.status(200).send("YOU ARE LOGGED IN");
+      res.status(200).json({
+        status: "success",
+        user,
+      });
     } else {
       res.status(400).send("INCORRECT PASSWORD OR EMAIL");
     }
