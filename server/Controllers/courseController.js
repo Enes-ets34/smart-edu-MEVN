@@ -15,15 +15,27 @@ const createCourse = async (req, res) => {
     });
   }
 };
+
 const getAllCourses = async (req, res) => {
   try {
     const categorySlug = req.query.categories;
-    const category = await Category.findOne({ slug: categorySlug });
+
+    const categories = await Category.find({ slug: categorySlug });
+
     let filter = {};
+    let courses = [];
     if (categorySlug) {
-      filter = { category: category._id };
+      for (let index = 0; index < categories.length; index++) {
+        filter = { category: categories[index]._id };
+        const foundCourses = await Course.find(filter).sort("-created_at");
+        courses.push(foundCourses);
+      }
+      let flattenCourses = [].concat.apply([], courses);
+      courses = [...flattenCourses];
+      console.log("courses:>>", courses);
+    } else {
+      courses = await Course.find().sort("-created_at");
     }
-    const courses = await Course.find(filter).sort('-created_at')
     res.status(200).json({
       status: "success",
       courses,

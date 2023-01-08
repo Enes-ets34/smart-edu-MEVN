@@ -12,9 +12,22 @@ export default {
     },
   },
   actions: {
-    fetchCourses({ commit }) {
+    fetchCourses({ commit }, categories ) {
+      let url = "/courses?";
+
+      if (categories) {
+
+        const IDs = categories
+          .filter((c) => c.selected)
+          .map((c) => `categories=${c.slug}`)
+          .join("&");
+
+        url = `${url}&${IDs}`;
+      }
+      console.log("url :>> ", url);
+
       appAxios
-        .get("/courses")
+        .get(url)
         .then((res) => {
           commit("setCourseList", res.data.courses);
         })

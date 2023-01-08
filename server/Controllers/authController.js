@@ -41,6 +41,7 @@ const login = async (req, res) => {
     } else {
       res.status(400).send("INCORRECT PASSWORD OR EMAIL");
     }
+    console.log('req. :>> ', req.session.userID);
   } catch (error) {
     res.status(400).json({
       status: "fail",

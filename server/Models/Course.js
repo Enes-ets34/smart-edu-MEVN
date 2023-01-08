@@ -11,7 +11,10 @@ const courseSchema = new Schema({
     required: true,
     ref: "Category",
   },
-  teacher: { type: String, required: true },
+  teacher: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   img: String,
   created_at: { type: Date, default: Date.now() },
   slug: { type: String, unique: true },

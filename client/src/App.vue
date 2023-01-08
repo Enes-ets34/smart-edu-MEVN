@@ -18,6 +18,7 @@ export default {
   created() {
     this.$store.dispatch("courses/fetchCourses")
     this.$store.dispatch("categories/fetchCategories");
+
   }
 
 }
