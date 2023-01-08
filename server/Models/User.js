@@ -10,13 +10,13 @@ const userSchema = new Schema({
   bio: { type: String, required: false, trim: true },
   email: { type: String, required: true, trim: true, unique: true },
   password: { type: String, required: true },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: false,
-    ref: "Category",
-  },
   profile_image: { type: String },
   created_at: { type: Date, default: Date.now() },
+  role: {
+    type: String,
+    enum: ["student", "teacher", "admin"],
+    default: "student",
+  },
 });
 userSchema.pre("validate", function (next) {
   this.password = CryptoJS.HmacSHA1(this.password, _saltKey).toString();
