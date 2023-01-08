@@ -19,8 +19,10 @@ export default {
         .post("/users/signup", pUser)
         .then((res) => {
           if (res.status === 201) {
-            commit("setUser", res.data.user);
-            localStorage.user = JSON.stringify(res.data.user);
+            const user = res.data.user;
+            delete user.password;
+            commit("setUser", user);
+            localStorage.user = JSON.stringify(user);
             router.push({ name: "Home" });
           }
         })
@@ -32,8 +34,10 @@ export default {
         .then((res) => {
           console.log("res :>> ", res);
           if (res.status === 200) {
-            commit("setUser", res.data.user);
-            localStorage.user = JSON.stringify(res.data.user);
+            const user = res.data.user;
+            delete user.password;
+            commit("setUser", user);
+            localStorage.user = JSON.stringify(user);
             router.push({ name: "Home" });
           }
         })

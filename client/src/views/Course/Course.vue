@@ -1,7 +1,6 @@
 <template>
   <div>
-    <Carousel :header="course.title" :content="course.description"
-      :image="!course.img ? `https://d9hhrg4mnvzow.cloudfront.net/join.codecademy.com/learn/paths/front-end-engineer-career-path-b/f1011174-full-stack-icon_107808y000000000000028.png` : course.img" />
+    <Carousel :carouselContent="carouselContent" />
     <div class="container">
       <div class="row">
         <div class="col-md-8 mx-auto mt-5">
@@ -28,14 +27,16 @@
 </template>
 
 <script>
-import Carousel from '../components/home/Carousel.vue'
-import appAxios from '../utils/appAxios'
+import Carousel from '../../components/shared/Carousel.vue'
+import appAxios from '../../utils/appAxios'
 
 export default {
   components: { Carousel },
   data() {
     return {
-      course: null
+      course: {},
+      carouselContent: {
+      }
     }
   },
   created() {
@@ -44,6 +45,11 @@ export default {
       .then(res => {
         this.course = res.data.course
         this.course.created_at = new Date(this.course.created_at)
+        this.carouselContent = {
+          header: this.course.title,
+          content: this.course.description,
+          img: this.course.img
+        }
         console.log('this.course :>> ', this.course);
 
       })
@@ -51,10 +57,10 @@ export default {
   },
   computed: {
     courseImg() {
-      return !this.course.img ? "https://eticaretsozlugu.kobisi.com/wp-content/uploads/2018/02/code-1839406_1280-825x510.jpg" : this.course.img
+      return !this.course?.img ? "https://eticaretsozlugu.kobisi.com/wp-content/uploads/2018/02/code-1839406_1280-825x510.jpg" : this.course?.img
     },
     createdAt() {
-      return `${(this.course.created_at).getDate()}/${(this.course.created_at).getMonth() + 1}/${(this.course.created_at).getFullYear()} `
+      return `${(this.course?.created_at)?.getDate()}/${(this.course?.created_at)?.getMonth() + 1}/${(this.course?.created_at)?.getFullYear()} `
     }
   }
 

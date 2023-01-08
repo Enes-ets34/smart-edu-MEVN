@@ -1,8 +1,6 @@
 <template>
   <div>
-    <Carousel :image="`https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg`" :content='`Enroll a Course For Free. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
-    consectetur, adipisicing elit. Rerum aliquam inventore facere temporibus eligendi.
-    Reprehenderit?`' />
+    <Carousel :carouselContent="carouselContent" />
     <div class="row">
       <div class="col-md-6 mx-auto text-center my-5 p-2">
         <h1 class="text-dark">Latest Courses</h1>
@@ -99,7 +97,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Carousel from '../components/home/Carousel.vue'
+import Carousel from '../components/shared/Carousel.vue'
 
 // @ is an alias to /src
 
@@ -109,15 +107,20 @@ export default {
   components: {
     Carousel
   },
+  data() {
+    return {
+      carouselContent: {
+        header: "Smart Edu For You.",
+        content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
+        img: "https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg"
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       latestCourses: "courses/getLatestCourses",
       currentUser: "users/getCurrentUser"
     })
   },
-  mounted() {
-
-  }
-
 }
 </script>

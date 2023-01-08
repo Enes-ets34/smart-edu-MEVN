@@ -19,10 +19,13 @@
                     <li class="nav-item">
                         <router-link active-class="active" class="nav-link" to="/courses">Courses</router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link v-if="currentUser" active-class="active" class="nav-link" to="/add-course"><i class="fa-regular fa-plus me-1"></i>Add Course</router-link>
+                    </li>
 
                     <li v-if="currentUser" class="nav-item dropdown">
-                        <a  class="nav-link " data-bs-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user me-2"></i>{{
+                        <a class="nav-link " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                            aria-expanded="false"><i class="fa-solid fa-user me-2"></i>{{
                                 currentUser.full_name
                             }}</a>
                         <div class="dropdown-menu">

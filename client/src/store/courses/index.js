@@ -1,4 +1,5 @@
 import appAxios from "../../utils/appAxios";
+import router from "../../router";
 
 export default {
   namespaced: true,
@@ -21,10 +22,25 @@ export default {
           console.error(err);
         });
     },
+    addCourse({}, pCourse) {
+      appAxios
+        .post("/courses", {
+          ...pCourse,
+          teacher: JSON.stringify(JSON.parse(localStorage.user).full_name),
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            router.push({ name: "Courses" });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   modules: {},
   getters: {
     getCourses: (state) => state.courseList,
-    getLatestCourses: (state) => state.courseList.slice(0,3),
+    getLatestCourses: (state) => state.courseList.slice(0, 3),
   },
 };

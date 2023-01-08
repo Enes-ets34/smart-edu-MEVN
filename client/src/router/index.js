@@ -38,7 +38,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     components: {
       default: () =>
-        import(/* webpackChunkName: "about" */ "../views/Course.vue"),
+        import(/* webpackChunkName: "about" */ "../views/Course/Course.vue"),
       appNavbar,
       appFooter,
     },
@@ -51,9 +51,20 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     components: {
       default: () =>
-        import(/* webpackChunkName: "about" */ "../views/Courses.vue"),
+        import(/* webpackChunkName: "about" */ "../views/Course/Courses.vue"),
       appNavbar,
       appFooter,
+    },
+  },
+  {
+    path: "/add-course",
+    name: "AddCourse",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    components: {
+      default: () =>
+        import(/* webpackChunkName: "about" */ "../views/Course/AddCourse.vue"),
     },
   },
   {
@@ -79,10 +90,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return { top: 0 };
+  },
 });
 
 router.beforeEach((to, from, next) => {
-  const authenticatedPages = ["Dashboard", "Profile"];
+  const authenticatedPages = ["Dashboard", "Profile", "AddCourse"];
   let user = null;
   if (localStorage?.user) {
     user = JSON.parse(localStorage?.user);

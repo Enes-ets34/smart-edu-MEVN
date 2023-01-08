@@ -53,13 +53,19 @@
                 <p>© 2022 Company, Inc. All rights reserved.</p>
                 <ul class="list-unstyled d-flex">
                     <li class="ms-3">
-                        <h1 class="link-dark" href="#"><i class="fa-brands fa-twitter"></i></h1>
+                        <a href="#">
+                            <h1 class="link-dark" href="#"><i class="fa-brands fa-twitter"></i></h1>
+                        </a>
                     </li>
                     <li class="ms-3">
-                        <h1 class="link-dark" href="#"><i class="fa-brands fa-square-instagram"></i></h1>
+                        <a href="#">
+                            <h1 class="link-dark" href="#"><i class="fa-brands fa-square-instagram"></i></h1>
+                        </a>
                     </li>
                     <li class="ms-3">
-                        <h1 class="link-dark" href="#"><i class="fa-brands fa-linkedin"></i></h1>
+                        <a href="#">
+                            <h1 class="link-dark" href="#"><i class="fa-brands fa-linkedin"></i></h1>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -77,6 +83,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+a:hover,h1:hover {
+    color: #593196 !important;
+    transition: all 1s;
+}
 </style>

@@ -23,7 +23,7 @@ const getAllCourses = async (req, res) => {
     if (categorySlug) {
       filter = { category: category._id };
     }
-    const courses = await Course.find(filter);
+    const courses = await Course.find(filter).sort('-created_at')
     res.status(200).json({
       status: "success",
       courses,

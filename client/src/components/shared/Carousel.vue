@@ -4,17 +4,16 @@
             <div class="row">
                 <div class="col-md-8 me-auto">
                     <p class="display-4 fw-bold">
-                       {{header}}
+                        {{ carouselContent.header }}
                     </p>
-                    <p class="fs-4">{{ content }}
-                    </p>
+                    <p v-html="carouselContent.content" class="fs-4"></p>
                     <div class="col-md-3 d-flex justify-content-between align-items-center">
                         <button class="btn btn-sm btn-warning">Contact Us</button>
                         <router-link to="/about" tag="button" class="btn btn-sm btn-secondary">About Us</router-link>
                     </div>
                 </div>
                 <div class="col-md-4  d-none d-sm-block d-md-none d-lg-block ">
-                    <img :src="image" alt="" class="img-fluid ">
+                    <img :src="carouselImg" alt="" class="img-fluid ">
                 </div>
 
             </div>
@@ -25,17 +24,14 @@
 <script>
 export default {
     props: {
-        content: {
-            type: String,
+        carouselContent: {
+            type: Object,
             required: true
         },
-        image: {
-            type: String,
-            required: true
-        },
-        header: {
-            type: String,
-            default: `Smart Edu For You`
+    },
+    computed: {
+        carouselImg() {
+            return !this.carouselContent.img ? `https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg` : this.carouselContent.img
         }
     }
 
