@@ -98,17 +98,26 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authenticatedPages = ["Dashboard", "Profile", "AddCourse"];
+  const roles = ["admin", "teacher"];
   let user = null;
+
+
+  
   if (localStorage?.user) {
     user = JSON.parse(localStorage?.user);
   }
   if (isObject(user)) {
     store.commit("users/setUser", user);
   }
+
   const isAuth = store.getters["users/isAuth"];
   if (!isAuth && authenticatedPages.indexOf(to.name) > -1) {
     next({ name: "Login" });
   }
+  if (!isAuth && to.name === "AddCourse") {
+    next({ name: "Login" });
+  }
+ 
   if ((isAuth && to.name === "Login") || (isAuth && to.name === "Register")) {
     next({ name: "Home" });
   }

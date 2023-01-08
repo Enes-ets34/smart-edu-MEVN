@@ -26,7 +26,8 @@ export default {
       appAxios
         .post("/courses", {
           ...pCourse,
-          teacher: JSON.stringify(JSON.parse(localStorage.user).full_name),
+          teacher: JSON.parse(localStorage.user).full_name,
+          role: JSON.parse(localStorage.user).role,
         })
         .then((res) => {
           if (res.status === 201) {

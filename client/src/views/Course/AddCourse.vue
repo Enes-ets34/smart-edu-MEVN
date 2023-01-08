@@ -76,6 +76,8 @@ export default {
     },
     methods: {
         addCourse() {
+            console.log('this.userData :>> ', this.userData);
+
             this.$store.dispatch("courses/addCourse", this.userData)
         }
     },

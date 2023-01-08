@@ -20,7 +20,9 @@
                         <router-link active-class="active" class="nav-link" to="/courses">Courses</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link v-if="currentUser" active-class="active" class="nav-link" to="/add-course"><i class="fa-regular fa-plus me-1"></i>Add Course</router-link>
+                        <router-link v-if="currentUser && currentUser.role !== 'student'" active-class="active"
+                            class="nav-link" to="/add-course"><i class="fa-regular fa-plus me-1"></i>Add
+                            Course</router-link>
                     </li>
 
                     <li v-if="currentUser" class="nav-item dropdown">

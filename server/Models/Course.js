@@ -12,7 +12,7 @@ const courseSchema = new Schema({
     ref: "Category",
   },
   teacher: { type: String, required: true },
-  thumbnail: String,
+  img: String,
   created_at: { type: Date, default: Date.now() },
   slug: { type: String, unique: true },
 });

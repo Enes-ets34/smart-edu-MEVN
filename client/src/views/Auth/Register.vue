@@ -22,14 +22,17 @@
                             placeholder="*****" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="category">Category</label>
-                        <!-- <select v-model="userData.category" class="form-select" name="category" id="category"
-                            aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select> -->
+                        <label for="category">Role</label>
+                        <select v-model="userData.role" class="form-select mb-3" id="category">
+
+                            <option value="student">
+                                Student
+                            </option>
+                            <option value="teacher">
+                                Teacher
+                            </option>
+                        </select>
+
                     </div>
                 </div>
                 <div class="d-grid gap-2 mt-3">
