@@ -10,13 +10,15 @@ export default {
     setCourseList(state, pCourses) {
       state.courseList = pCourses;
     },
+    addCourse(state, pCourse) {
+      state.courseList.unshift(pCourse);
+    },
   },
   actions: {
-    fetchCourses({ commit }, categories ) {
+    fetchCourses({ commit }, categories) {
       let url = "/courses?";
 
       if (categories) {
-
         const IDs = categories
           .filter((c) => c.selected)
           .map((c) => `categories=${c.slug}`)
@@ -35,16 +37,17 @@ export default {
           console.error(err);
         });
     },
-    addCourse({}, pCourse) {
+    addCourse({ commit }, pCourse) {
       appAxios
         .post("/courses", {
           ...pCourse,
-          teacher: JSON.parse(localStorage.user).full_name,
+          teacher: JSON.parse(localStorage.user)._id,
           role: JSON.parse(localStorage.user).role,
         })
         .then((res) => {
           if (res.status === 201) {
             router.push({ name: "Courses" });
+            commit("addCourse", res.data.course);
           }
         })
         .catch((err) => {
@@ -56,5 +59,6 @@ export default {
   getters: {
     getCourses: (state) => state.courseList,
     getLatestCourses: (state) => state.courseList.slice(0, 3),
+    getCoursesCount: (state) => state.courseList.length,
   },
 };

@@ -34,6 +34,7 @@ const login = async (req, res) => {
     }
     if (user.password === userData.password) {
       req.session.userID = user._id;
+
       res.status(200).json({
         status: "success",
         user,
@@ -41,7 +42,6 @@ const login = async (req, res) => {
     } else {
       res.status(400).send("INCORRECT PASSWORD OR EMAIL");
     }
-    console.log('req. :>> ', req.session.userID);
   } catch (error) {
     res.status(400).json({
       status: "fail",

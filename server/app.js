@@ -26,6 +26,8 @@ mongoose
     console.error(err);
   });
 
+global.userIN = null;
+
 //MIDDLEWARES
 app.use(cors());
 app.use(express.json());
@@ -38,7 +40,9 @@ app.use(
     secret: "sessionB!tch",
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: "mongodb://localhost/smart-edu-test" }),
+    store: MongoStore.create({
+      mongoUrl: "mongodb://localhost/smart-edu-test",
+    }),
   })
 );
 app.use("/", pageRoutes);

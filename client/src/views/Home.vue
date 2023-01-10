@@ -63,7 +63,7 @@
               <div class="col-md-8">
                 <div class="card-body">
                   <h2>
-                    56 Courses
+                   {{coursesCount}} Courses
                   </h2>
 
                 </div>
@@ -119,7 +119,9 @@ export default {
   computed: {
     ...mapGetters({
       latestCourses: "courses/getLatestCourses",
-      currentUser: "users/getCurrentUser"
+      currentUser: "users/getCurrentUser",
+      coursesCount: "courses/getCoursesCount",
+
     })
   },
 }

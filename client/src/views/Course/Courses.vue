@@ -6,7 +6,7 @@
         <div class="row">
           <Categories @select-category="selectCategories($event)" :categories="categories" />
           <div class="col-md-8">
-            <div v-if="courseList.length===0" class="col-md-8 mx-auto alert alert-primary text-center">
+            <div v-if="courseList.length === 0" class="col-md-8 mx-auto alert alert-primary text-center">
               <p class="display-6">there is no course for this category(ies) yet.</p>
             </div>
             <div class="row">
@@ -46,6 +46,8 @@ export default {
 
   created() {
     this.$store.getters["categories/getSelectedCategories"]
+    this.$store.dispatch("courses/fetchCourses")
+    this.$store.dispatch("categories/fetchCategories");
   },
   computed: {
     ...mapGetters({
