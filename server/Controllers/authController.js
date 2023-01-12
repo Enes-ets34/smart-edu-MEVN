@@ -1,4 +1,5 @@
 const User = require("../Models/User");
+const Course = require("../Models/Course");
 const CryptoJS = require("crypto-js");
 const session = require("express-session");
 const _saltKey = "passB!tch";
@@ -70,10 +71,14 @@ const getAllUsers = async (req, res) => {
   }
 };
 const getDashboardPage = async (req, res) => {
-  const user = await User.findOne({ _id: req.session.userID });
-  if (user) {
+  const courses = await Course.find({ teacher: req.params.id })
+    .populate("teacher")
+    .populate("category")
+    .sort("-created_at")
+    .exec()
+  if (courses) {
     res.status(200).send({
-      user,
+      courses,
     });
   } else {
     res.status(403).send("YOU ARE NOT AUTHORIZED");

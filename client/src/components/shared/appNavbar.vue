@@ -32,8 +32,8 @@
                             }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item small" href="#"><i class="fa-regular fa-user me-1"></i>Profile</a>
-                            <a class="dropdown-item small" href="#"><i
-                                    class="fa-solid fa-laptop-code me-1"></i>Dashboard</a>
+                            <router-link to="/dashboard" class="dropdown-item small" href="#"><i
+                                    class="fa-solid fa-laptop-code me-1"></i>Dashboard</router-link>
 
                             <div class="dropdown-divider"></div>
                             <button @click="logout" class="dropdown-item small" href="#">

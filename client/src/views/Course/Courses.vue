@@ -10,8 +10,20 @@
               <p class="display-6">there is no course for this category(ies) yet.</p>
             </div>
             <div class="row">
-
-              <Course-item v-for="course in courseList" :key="course._id" :course="course" />
+              <div v-for="course in courseList" :key="course._id" class="col-md-5 d-flex align-self-stretch mb-3">
+                <Course-item :course="course">
+                  <template #footer>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="d-flex justify-content-start align-items-center">
+                        <i class="fa-solid fa-chalkboard-user me-1"></i>{{ course.teacher.full_name }}
+                      </small>
+                      <small class="d-flex justify-content-start align-items-center">
+                        <i class="fa-solid fa-hashtag me-1"></i>{{ course.category.title }}
+                      </small>
+                    </div>
+                  </template>
+                </Course-item>
+              </div>
             </div>
           </div>
         </div>

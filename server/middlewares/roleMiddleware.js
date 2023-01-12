@@ -2,6 +2,8 @@ const User = require("../Models/User");
 
 const roles = ["admin", "teacher"];
 const roleMiddleware = (req, res, next) => {
+  const id = req.session.userID;
+
   const userRole = req.body.role;
   if (roles.includes(userRole)) {
     next();

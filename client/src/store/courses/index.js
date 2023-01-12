@@ -13,6 +13,7 @@ export default {
     addCourse(state, pCourse) {
       state.courseList.unshift(pCourse);
     },
+  
   },
   actions: {
     fetchCourses({ commit }, categories) {
@@ -54,6 +55,22 @@ export default {
           console.error(err);
         });
     },
+    updateCourse({ commit }, pCourse) {
+      appAxios
+        .put(`/courses/${pCourse._id}`, {
+          ...pCourse,
+          role: JSON.parse(localStorage.user).role,
+        })
+        .then((res) => {
+          if (res.status === 204) {
+            location.reload();
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+   
   },
   modules: {},
   getters: {

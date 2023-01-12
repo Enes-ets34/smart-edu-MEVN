@@ -18,6 +18,43 @@ const createCourse = async (req, res) => {
     });
   }
 };
+const updateCourse = async (req, res) => {
+  try {
+    const course = await Course.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        title: req.body.title,
+        description: req.body.description,
+        category: req.body.category,
+        img: req.body.img,
+      },
+      { returnOriginal: false }
+    );
+    res.status(204).json({
+      status: "success",
+      course,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
+const deleteCourse = async (req, res) => {
+
+  try {
+    await Course.deleteOne({ _id: req.params.id });
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
 
 const getAllCourses = async (req, res) => {
   try {
@@ -30,7 +67,11 @@ const getAllCourses = async (req, res) => {
     if (categorySlug) {
       for (let index = 0; index < categories.length; index++) {
         filter = { category: categories[index]._id };
-        const foundCourses = await Course.find(filter);
+        const foundCourses = await Course.find(filter)
+          .sort("-created_at")
+          .populate("teacher")
+          .populate("category")
+          .exec();
         courses.push(foundCourses);
       }
       let flattenCourses = [].concat.apply([], courses);
@@ -41,7 +82,11 @@ const getAllCourses = async (req, res) => {
 
       console.log("courses:>>", courses);
     } else {
-      courses = await Course.find().sort("-created_at").populate("teacher").populate("category")
+      courses = await Course.find()
+        .sort("-created_at")
+        .populate("teacher")
+        .populate("category")
+        .exec();
     }
     res.status(200).json({
       status: "success",
@@ -56,7 +101,10 @@ const getAllCourses = async (req, res) => {
 };
 const getSingleCourse = async (req, res) => {
   try {
-    const course = await Course.findOne({ slug: req.params.slug });
+    const course = await Course.findOne({ slug: req.params.slug })
+      .populate("teacher")
+      .populate("category")
+      .exec();
     res.status(200).json({
       status: "success",
       course,
@@ -71,6 +119,8 @@ const getSingleCourse = async (req, res) => {
 
 module.exports = {
   createCourse,
+  updateCourse,
+  deleteCourse,
   getAllCourses,
   getSingleCourse,
 };

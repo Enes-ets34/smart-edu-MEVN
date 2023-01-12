@@ -18,7 +18,7 @@
               </div>
               <div class="card-text  border-start border-5 border-primary px-3">{{ course.description }}</div>
             </div>
-            <div class="card-footer text-center">{{ course.teacher }}</div>
+            <div class="card-footer text-center"><h5><i class="fa-solid fa-chalkboard-user me-2"></i>{{ course.teacher.full_name }}</h5></div>
           </div>
         </div>
       </div>
