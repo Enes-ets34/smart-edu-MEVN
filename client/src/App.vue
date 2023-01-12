@@ -1,10 +1,8 @@
 <template>
-  <div id="nav">
-    <appNavbar name="appNavbar" />
-    <div id="modalContent"></div>
-    <router-view />
-    <appFooter name="appFooter" />
-  </div>
+  <appNavbar name="appNavbar" />
+  <div id="modalContent"></div>
+  <router-view />
+  <appFooter name="appFooter" />
 </template>
 
 <script>

@@ -13,7 +13,6 @@ export default {
     addCourse(state, pCourse) {
       state.courseList.unshift(pCourse);
     },
-  
   },
   actions: {
     fetchCourses({ commit }, categories) {
@@ -55,6 +54,21 @@ export default {
           console.error(err);
         });
     },
+    enrollCourse({ commit }, pCourse) {
+      appAxios
+        .post(`/courses/enroll`, {
+          course_id: pCourse._id,
+          user_id: JSON.parse(localStorage.user)._id,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            router.push({ name: "Dashboard" });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     updateCourse({ commit }, pCourse) {
       appAxios
         .put(`/courses/${pCourse._id}`, {
@@ -70,7 +84,6 @@ export default {
           console.error(err);
         });
     },
-   
   },
   modules: {},
   getters: {

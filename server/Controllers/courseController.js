@@ -1,6 +1,7 @@
 const Category = require("../Models/Category");
 const Course = require("../Models/Course");
 const session = require("express-session");
+const User = require("../Models/User");
 
 const createCourse = async (req, res) => {
   try {
@@ -42,7 +43,6 @@ const updateCourse = async (req, res) => {
   }
 };
 const deleteCourse = async (req, res) => {
-
   try {
     await Course.deleteOne({ _id: req.params.id });
     res.status(204).json({
@@ -116,11 +116,52 @@ const getSingleCourse = async (req, res) => {
     });
   }
 };
+const enrollCourse = async (req, res) => {
+  try {
+    const user = await User.findById(req.body.user_id);
+    if (!user.courses.includes(req.body.course_id)) {
+      await user.courses.push({ _id: req.body.course_id });
+      await user.save();
+      res.status(200).json({
+        status: "success",
+        user,
+      });
+    } else {
+      res.status(400).json({
+        status: "fail",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
+const releaseCourse = async (req, res) => {
+  console.log("buraya istek geldi");
+  try {
+    const user = await User.findById(req.body.user_id);
+    await user.courses.pull({ _id: req.body.course_id });
+    await user.save();
+    res.status(200).json({
+      status: "success",
+      user,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
 
 module.exports = {
   createCourse,
   updateCourse,
   deleteCourse,
+  enrollCourse,
+  releaseCourse,
   getAllCourses,
   getSingleCourse,
 };

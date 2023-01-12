@@ -1,7 +1,21 @@
 <template>
-    <div class="alert alert-primary text-center">
-        <p class="display-6">there is no course for this category(ies) not yet.</p>
+    <div class="alert  text-center p-3" :class="alertBG">
+        <slot name="content">
+
+        </slot>
     </div>
 </template>
 <script>
+export default {
+    props: {
+        alertType: {
+            type: String
+        }
+    },
+    computed: {
+        alertBG() {
+            return `alert-${this.alertType}`
+        }
+    }
+}
 </script>
