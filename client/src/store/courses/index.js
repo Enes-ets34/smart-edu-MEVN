@@ -15,17 +15,20 @@ export default {
     },
   },
   actions: {
-    fetchCourses({ commit }, categories) {
+    fetchCourses({ commit },  {categories, searchKey} ) {
+      console.log("categories :>> ", categories);
+
       let url = "/courses?";
 
-      if (categories) {
+      if (categories || searchKey) {
         const IDs = categories
           .filter((c) => c.selected)
           .map((c) => `categories=${c.slug}`)
           .join("&");
 
-        url = `${url}&${IDs}`;
+        url = `${url}&${IDs}&search=${searchKey}`;
       }
+
       console.log("url :>> ", url);
 
       appAxios
@@ -69,7 +72,6 @@ export default {
           console.error(err);
         });
     },
-   
   },
   modules: {},
   getters: {

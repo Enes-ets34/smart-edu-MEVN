@@ -5,7 +5,7 @@
       <div class="col-md-12 mx-auto">
         <div class="row">
           <div class="col-md-3 me-auto mb-4">
-            <div class="d-flex mb-2"><input type="text" class="form-control" placeholder="Search..."
+            <div class="d-flex mb-2"><input type="text" class="form-control" placeholder="Search..." v-model="searchKey"
                 @keypress.enter="searchCourse"> <button class="btn btn-primary" @click="searchCourse"><i
                   class="fa-brands fa-searchengin"></i></button>
             </div>
@@ -53,7 +53,7 @@ export default {
   components: { Carousel, Categories, CourseItem },
   data() {
     return {
-
+      searchKey: null,
       carouselContent: {
         header: "Courses",
         content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
@@ -63,19 +63,23 @@ export default {
   },
 
   created() {
-    this.$store.getters["categories/getSelectedCategories"]
+    // this.$store.getters["categories/getSelectedCategories"]
     this.$store.dispatch("courses/fetchCourses")
     this.$store.dispatch("categories/fetchCategories");
   },
   computed: {
     ...mapGetters({
       categories: "categories/getCategories",
+      selectedCategories: "categories/getSelectedCategories",
       courseList: "courses/getCourses"
     })
   },
   methods: {
     selectCategories(e) {
-      this.$store.dispatch("courses/fetchCourses", this.categories);
+      this.$store.dispatch("courses/fetchCourses", { categories: this.categories });
+    },
+    searchCourse() {
+      this.$store.dispatch("courses/fetchCourses", { searchKey: this.searchKey });
     }
   }
 }
