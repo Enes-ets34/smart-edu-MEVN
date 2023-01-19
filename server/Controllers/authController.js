@@ -52,8 +52,8 @@ const login = async (req, res) => {
   }
 };
 const logout = (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/");
+  res.status(200).send({
+    status: "success",
   });
 };
 const getAllUsers = async (req, res) => {
@@ -71,18 +71,14 @@ const getAllUsers = async (req, res) => {
   }
 };
 const getDashboardPage = async (req, res) => {
-  const courses = await Course.find({ teacher: req.params.id })
-    .populate("teacher")
-    .populate("category")
-    .sort("-created_at")
-    .exec()
-  if (courses) {
-    res.status(200).send({
-      courses,
-    });
-  } else {
-    res.status(403).send("YOU ARE NOT AUTHORIZED");
-  }
+  const user = await User.findById(req.params.id).populate("courses");
+  const courses = await Course.find({ teacher: req.params.id });
+  res.status(200).send({
+    user,
+    courses,
+  });
+
+  console.log("user :>> ", user);
 };
 module.exports = {
   getAllUsers,

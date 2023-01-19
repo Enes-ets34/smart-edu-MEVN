@@ -13,7 +13,6 @@ export default {
     addCourse(state, pCourse) {
       state.courseList.unshift(pCourse);
     },
-  
   },
   actions: {
     fetchCourses({ commit }, categories) {

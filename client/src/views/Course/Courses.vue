@@ -4,7 +4,13 @@
     <div class="container my-5">
       <div class="col-md-12 mx-auto">
         <div class="row">
-          <Categories @select-category="selectCategories($event)" :categories="categories" />
+          <div class="col-md-3 me-auto mb-4">
+            <div class="d-flex mb-2"><input type="text" class="form-control" placeholder="Search..."
+                @keypress.enter="searchCourse"> <button class="btn btn-primary" @click="searchCourse"><i
+                  class="fa-brands fa-searchengin"></i></button>
+            </div>
+            <Categories @select-category="selectCategories($event)" :categories="categories" />
+          </div>
           <div class="col-md-8">
             <div v-if="courseList.length === 0" class="col-md-8 mx-auto alert alert-primary text-center">
               <p class="display-6">there is no course for this category(ies) yet.</p>
@@ -70,8 +76,6 @@ export default {
   methods: {
     selectCategories(e) {
       this.$store.dispatch("courses/fetchCourses", this.categories);
-
-
     }
   }
 }
