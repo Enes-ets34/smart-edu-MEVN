@@ -48,9 +48,9 @@ export default {
         .get("/users/logout")
         .then((res) => {
           if (res.status === 200) {
+            router.push({ name: "Home" });
             localStorage.removeItem("user");
             commit("clearUser");
-            router.push({ name: "Home" });
           }
         })
         .catch((err) => console.error(err));

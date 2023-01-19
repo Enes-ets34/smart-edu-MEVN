@@ -25,7 +25,9 @@ const userSchema = new Schema({
   ],
 });
 userSchema.pre("validate", function (next) {
-  this.password = CryptoJS.HmacSHA1(this.password, _saltKey).toString();
+  if (!this.isModified("password")) return next();
+  const user = this;
+  user.password = CryptoJS.HmacSHA1(user.password, _saltKey).toString();
 
   next();
 });

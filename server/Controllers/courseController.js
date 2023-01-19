@@ -59,16 +59,21 @@ const deleteCourse = async (req, res) => {
 const getAllCourses = async (req, res) => {
   try {
     const categorySlug = req.query.categories;
+    const searchKey = req.query.search;
 
     const categories = await Category.find({ slug: categorySlug });
 
     let filter = {};
     let courses = [];
-    if (categorySlug) {
+    if (categorySlug && searchKey) {
       for (let index = 0; index < categories.length; index++) {
-        filter = { category: categories[index]._id };
-        const foundCourses = await Course.find(filter)
-          .sort("-created_at")
+        filter = { category: categories[index]._id, title: searchKey };
+        const foundCourses = await Course.find({
+          $or: [
+            { title: { $regex: ".*" + filter.title + ".*", $options: "i" } },
+            { category: filter.category },
+          ],
+        })
           .populate("teacher")
           .populate("category")
           .exec();
@@ -81,6 +86,33 @@ const getAllCourses = async (req, res) => {
       });
 
       console.log("courses:>>", courses);
+    } else if (!categorySlug && searchKey) {
+      filter = { title: searchKey };
+      courses = await Course.find({
+        $or: [
+          { title: { $regex: ".*" + filter.title + ".*", $options: "i" } },
+          { category: filter.category },
+        ],
+      })
+        .populate("teacher")
+        .populate("category")
+        .exec();
+    } else if (categorySlug && !searchKey) {
+      for (let index = 0; index < categories.length; index++) {
+        filter = { category: categories[index]._id, title: searchKey };
+        const foundCourses = await Course.find({
+          category: filter.category,
+        })
+          .populate("teacher")
+          .populate("category")
+          .exec();
+        courses.push(foundCourses);
+      }
+      let flattenCourses = [].concat.apply([], courses);
+
+      courses = [...flattenCourses].sort((a, b) => {
+        return b.created_at.getTime() - a.created_at.getTime();
+      });
     } else {
       courses = await Course.find()
         .sort("-created_at")
@@ -119,6 +151,7 @@ const getSingleCourse = async (req, res) => {
 const enrollCourse = async (req, res) => {
   try {
     const user = await User.findById(req.body.user_id);
+<<<<<<< HEAD
     if (!user.courses.includes(req.body.course_id)) {
       await user.courses.push({ _id: req.body.course_id });
       await user.save();
@@ -131,6 +164,14 @@ const enrollCourse = async (req, res) => {
         status: "fail",
       });
     }
+=======
+    await user.courses.push({ _id: req.body.course_id });
+    await user.save();
+    res.status(201).json({
+      status: "success",
+      user,
+    });
+>>>>>>> dev-enes
   } catch (error) {
     res.status(400).json({
       status: "fail",
@@ -139,9 +180,15 @@ const enrollCourse = async (req, res) => {
   }
 };
 const releaseCourse = async (req, res) => {
+<<<<<<< HEAD
   console.log("buraya istek geldi");
   try {
     const user = await User.findById(req.body.user_id);
+=======
+  try {
+    const user = await User.findById(req.body.user_id);
+    delete user.password;
+>>>>>>> dev-enes
     await user.courses.pull({ _id: req.body.course_id });
     await user.save();
     res.status(200).json({
@@ -164,4 +211,6 @@ module.exports = {
   releaseCourse,
   getAllCourses,
   getSingleCourse,
+  enrollCourse,
+  releaseCourse,
 };
