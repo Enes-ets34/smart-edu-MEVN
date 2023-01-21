@@ -15,23 +15,27 @@ export default {
     },
   },
   actions: {
-    fetchCourses({ commit }, categories) {
+    fetchCourses({ commit }, { categories, searchKey }) {
+
       let url = "/courses?";
-
+      const IDs = categories
+        .filter((c) => c.selected)
+        .map((c) => `categories=${c.slug}`)
+        .join("&");
       if (categories) {
-        const IDs = categories
-          .filter((c) => c.selected)
-          .map((c) => `categories=${c.slug}`)
-          .join("&");
-
         url = `${url}&${IDs}`;
       }
+      if (searchKey) {
+        url = `${url}&search=${searchKey}`;
+      }
+    
       console.log("url :>> ", url);
 
       appAxios
         .get(url)
         .then((res) => {
-          commit("setCourseList", res.data.courses);
+          commit("setCourseList", res?.data?.courses);
+          console.log('res?.data?.courses :>> ', res?.data?.courses);
         })
         .catch((err) => {
           console.error(err);
@@ -69,7 +73,6 @@ export default {
           console.error(err);
         });
     },
-   
   },
   modules: {},
   getters: {

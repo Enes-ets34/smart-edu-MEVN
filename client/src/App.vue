@@ -8,7 +8,9 @@
 </template>
 
 <script>
-import appAxios from './utils/appAxios';
+import { mapGetters } from 'vuex';
+
+
 
 export default {
   data() {
@@ -17,9 +19,14 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("courses/fetchCourses")
+    this.$store.dispatch("courses/fetchCourses", { categories: this.categories })
     this.$store.dispatch("categories/fetchCategories");
 
+  },
+  computed: {
+    ...mapGetters({
+      categories: "categories/getCategories"
+    })
   }
 
 }
