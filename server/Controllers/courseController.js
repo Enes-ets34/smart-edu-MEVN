@@ -81,11 +81,11 @@ const getAllCourses = async (req, res) => {
       }
       let flattenCourses = [].concat.apply([], courses);
 
-      courses = [...flattenCourses].sort((a, b) => {
+      (courses = [...flattenCourses].sort((a, b) => {
         return b.created_at.getTime() - a.created_at.getTime();
-      });
-
-      console.log("courses:>>", courses);
+      })),
+        (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
+      console.log("courses :>> ", courses);
     } else if (!categorySlug && searchKey) {
       filter = { title: searchKey };
       courses = await Course.find({
@@ -110,9 +110,13 @@ const getAllCourses = async (req, res) => {
       }
       let flattenCourses = [].concat.apply([], courses);
 
-      courses = [...flattenCourses].sort((a, b) => {
-        return b.created_at.getTime() - a.created_at.getTime();
-      });
+      courses = 
+        [...flattenCourses].sort((a, b) => {
+          return b.created_at.getTime() - a.created_at.getTime();
+        }),
+    
+      courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse);
+      console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
         .sort("-created_at")
