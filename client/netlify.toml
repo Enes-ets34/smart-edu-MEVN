@@ -5,7 +5,8 @@
     commandOrigin= "config"
     publish= "/opt/build/repo/client/dist"
     publishOrigin= "ui"
-    [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+    
+  [[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200
