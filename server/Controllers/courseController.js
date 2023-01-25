@@ -112,19 +112,19 @@ const getAllCourses = async (req, res) => {
       }
       let flattenCourses = [].concat.apply([], courses);
 
-<<<<<<< HEAD
+
       courses = 
         [...flattenCourses].sort((a, b) => {
           return b.created_at.getTime() - a.created_at.getTime();
         }),
     
       courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse);
-=======
+
       (courses = [...flattenCourses].sort((a, b) => {
         return b.created_at.getTime() - a.created_at.getTime();
       })),
         (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
->>>>>>> dev-enes
+
       console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
@@ -222,15 +222,15 @@ const enrollCourse = async (req, res) => {
   }
 };
 const releaseCourse = async (req, res) => {
-<<<<<<< HEAD
+
   console.log("buraya istek geldi");
   try {
     const user = await User.findById(req.body.user_id);
-=======
+
   try {
     const user = await User.findById(req.body.user_id);
     delete user.password;
->>>>>>> dev-enes
+
     await user.courses.pull({ _id: req.body.course_id });
     await user.save();
     res.status(200).json({
