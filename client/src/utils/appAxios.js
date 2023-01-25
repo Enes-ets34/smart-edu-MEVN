@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const appAxios = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://smartedu-service.onrender.com/",
   withCredentials: false,
   headers: {
     "Content-Type": "application/json",
