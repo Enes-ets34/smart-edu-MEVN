@@ -112,19 +112,16 @@ const getAllCourses = async (req, res) => {
       }
       let flattenCourses = [].concat.apply([], courses);
 
-
       courses = 
         [...flattenCourses].sort((a, b) => {
           return b.created_at.getTime() - a.created_at.getTime();
         }),
     
       courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse);
-
       (courses = [...flattenCourses].sort((a, b) => {
         return b.created_at.getTime() - a.created_at.getTime();
       })),
         (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
-
       console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
@@ -165,18 +162,6 @@ const enrollCourse = async (req, res) => {
   try {
     const course = await Course.findById({ _id: req.body.course_id });
     const user = await User.findById(req.body.user_id);
-    if (!user.courses.includes(req.body.course_id)) {
-      await user.courses.push({ _id: req.body.course_id });
-      await user.save();
-      res.status(200).json({
-        status: "success",
-        user,
-      });
-    } else {
-      res.status(400).json({
-        status: "fail",
-      });
-    }
     await user.courses.push({ _id: req.body.course_id });
     await user.save();
 
@@ -223,14 +208,10 @@ const enrollCourse = async (req, res) => {
 };
 const releaseCourse = async (req, res) => {
 
-  console.log("buraya istek geldi");
-  try {
-    const user = await User.findById(req.body.user_id);
 
   try {
     const user = await User.findById(req.body.user_id);
     delete user.password;
-
     await user.courses.pull({ _id: req.body.course_id });
     await user.save();
     res.status(200).json({
@@ -249,8 +230,6 @@ module.exports = {
   createCourse,
   updateCourse,
   deleteCourse,
-  enrollCourse,
-  releaseCourse,
   getAllCourses,
   getSingleCourse,
   enrollCourse,
