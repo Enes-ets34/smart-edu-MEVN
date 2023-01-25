@@ -177,20 +177,20 @@ const enrollCourse = async (req, res) => {
 
   <h2 style='font-size:50px'>${course.title}</h2>
   <p style='font-size:25px'> ${course.description}</p>
-  <b> <a href='http://localhost:8080/course/${course.slug}'>Click for get to the course.</a></b>
+  <b> <a href='https://smartedu-service.onrender.com/course/${course.slug}'>Click for get to the course.</a></b>
 
   `;
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
       secure: true, // true for 465, false for other ports
-      auth: {
-        user: "ets.34.es@gmail.com", // gmail account
-        pass: "qtxsampiigdyuovb", // gmail password
+        auth: {
+        user: process.env.MAIL, // gmail account
+        pass: process.env.PASSOWRD, // gmail password
       },
     });
     let info = await transporter.sendMail({
-      from: '"Smart EDU Contact Form" <ets.34.es@gmail.com>', // sender address
+   from: `"Smart EDU Contact Form" ${process.env.MAIL} `, // sender address
       to: user.email, // list of receivers
       subject: "Smart EDU - Enrolled Course Successfully ✔", // Subject line
       html: outputMessage, // html body
