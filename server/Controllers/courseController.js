@@ -165,7 +165,6 @@ const enrollCourse = async (req, res) => {
   try {
     const course = await Course.findById({ _id: req.body.course_id });
     const user = await User.findById(req.body.user_id);
-<<<<<<< HEAD
     if (!user.courses.includes(req.body.course_id)) {
       await user.courses.push({ _id: req.body.course_id });
       await user.save();
@@ -178,7 +177,6 @@ const enrollCourse = async (req, res) => {
         status: "fail",
       });
     }
-=======
     await user.courses.push({ _id: req.body.course_id });
     await user.save();
 
@@ -216,7 +214,6 @@ const enrollCourse = async (req, res) => {
       status: "success",
       user,
     });
->>>>>>> dev-enes
   } catch (error) {
     res.status(400).json({
       status: "fail",
