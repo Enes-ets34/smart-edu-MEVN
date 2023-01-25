@@ -21,7 +21,7 @@
                   <template #footer>
                     <div class="d-flex justify-content-between align-items-center">
                       <small class="d-flex justify-content-start align-items-center">
-                        <i class="fa-solid fa-chalkboard-user me-1"></i>{{ course.teacher.full_name }}
+                        <i class="fa-solid fa-chalkboard-user me-1"></i>{{ course?.teacher?.full_name }}
                       </small>
                       <small class="d-flex justify-content-start align-items-center">
                         <i class="fa-solid fa-hashtag me-1"></i>{{ course.category.title }}
