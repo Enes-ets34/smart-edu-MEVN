@@ -17,13 +17,8 @@
             <div class="card-body">
               <div class="card-title d-flex justify-content-between align-items-center">
                 <span class="text-muted"><i class="fa-solid fa-calendar-days"></i>  {{ createdAt }}</span>
-<<<<<<< HEAD
-                <button v-if="hasAlreadyEnroll" @click="enrollCourse" class="btn btn-primary w-25">Enroll</button>
-                <button v-else class="btn btn-danger w-25">Release</button>
-=======
                 <button v-if="hasEnrolled" @click="releaseCourse" class="btn btn-danger w-25">Release</button>
                 <button v-else @click="enrollCourse" class="btn btn-primary w-25">Enroll</button>
->>>>>>> dev-enes
               </div>
               <div class="card-title">
                 <h3>{{ course.title }} </h3>
@@ -33,8 +28,6 @@
             <div class="card-footer text-center">
               <h5><i class="fa-solid fa-chalkboard-user me-2"></i>{{ course.teacher?.full_name }}</h5>
             </div>
-<<<<<<< HEAD
-=======
           </div>
           <div class="my-2 card mb-3 bg-light p-2">
             <div class="row g-0 align-items-center">
@@ -49,7 +42,6 @@
                 </div>
               </div>
             </div>
->>>>>>> dev-enes
           </div>
         </div>
       </div>
@@ -127,28 +119,6 @@ export default {
     createdAt() {
       return `${(this.course?.created_at)?.getDate()}/${(this.course?.created_at)?.getMonth() + 1}/${(this.course?.created_at)?.getFullYear()} `
     },
-<<<<<<< HEAD
-    hasAlreadyEnroll() {
-      return !this.currentUser?.courses?.includes(this.course)
-    },
-    ...mapGetters({
-      currentUser: "users/getCurrentUser"
-    })
-  },
-  methods: {
-    enrollCourse() {
-      this.$store.dispatch("courses/enrollCourse", this.course)
-    }
-  },
-  watch: {
-    showAlert(newVal) {
-      if (newVal) {
-        setTimeout(() => {
-          this.showAlert = false
-        }, 2500);
-      }
-    }
-=======
     profile_img() {
       return !this.course?.teacher?.profile_img ? "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png" : this.course?.teacher?.profile_img
     },
@@ -156,7 +126,6 @@ export default {
       return Boolean(this.currentUser.courses.find(c => c === this.course._id))
     },
 
->>>>>>> dev-enes
   }
 
 }
