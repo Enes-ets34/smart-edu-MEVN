@@ -18,7 +18,7 @@ const PORT = 3000;
 
 //CONNECT DB
 mongoose
-  .connect("mongodb://localhost/smart-edu-test")
+  .connect("mongodb+srv://enes:qPkstnzIshv71EPS@cluster0.h6tl66y.mongodb.net/smartedu-db?retryWrites=true&w=majority")
   .then(() => {
     console.log("DB CONNECTED");
   })
@@ -41,7 +41,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: "mongodb://localhost/smart-edu-test",
+      mongoUrl: "mongodb+srv://enes:qPkstnzIshv71EPS@cluster0.h6tl66y.mongodb.net/smartedu-db?retryWrites=true&w=majority",
     }),
   })
 );

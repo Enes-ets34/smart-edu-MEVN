@@ -1,7 +1,9 @@
 const Category = require("../Models/Category");
 const Course = require("../Models/Course");
-const session = require("express-session");
 const User = require("../Models/User");
+
+const session = require("express-session");
+const nodemailer = require("nodemailer");
 
 const createCourse = async (req, res) => {
   try {
@@ -110,12 +112,19 @@ const getAllCourses = async (req, res) => {
       }
       let flattenCourses = [].concat.apply([], courses);
 
+<<<<<<< HEAD
       courses = 
         [...flattenCourses].sort((a, b) => {
           return b.created_at.getTime() - a.created_at.getTime();
         }),
     
       courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse);
+=======
+      (courses = [...flattenCourses].sort((a, b) => {
+        return b.created_at.getTime() - a.created_at.getTime();
+      })),
+        (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
+>>>>>>> dev-enes
       console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
@@ -154,6 +163,7 @@ const getSingleCourse = async (req, res) => {
 };
 const enrollCourse = async (req, res) => {
   try {
+    const course = await Course.findById({ _id: req.body.course_id });
     const user = await User.findById(req.body.user_id);
 <<<<<<< HEAD
     if (!user.courses.includes(req.body.course_id)) {
@@ -171,6 +181,37 @@ const enrollCourse = async (req, res) => {
 =======
     await user.courses.push({ _id: req.body.course_id });
     await user.save();
+
+    const outputMessage = `
+  <h1>Mail Details </h1>
+  <ul>
+    <li>Name: ${user.full_name}</li>
+    <li>Email: ${user.email}</li>
+  </ul>
+  <h1>Course</h1>
+<hr/>
+  <img style='width:300px;' src='${course.img}'/>
+
+  <h2 style='font-size:50px'>${course.title}</h2>
+  <p style='font-size:25px'> ${course.description}</p>
+  <b> <a href='http://localhost:8080/course/${course.slug}'>Click for get to the course.</a></b>
+
+  `;
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "ets.34.es@gmail.com", // gmail account
+        pass: "qtxsampiigdyuovb", // gmail password
+      },
+    });
+    let info = await transporter.sendMail({
+      from: '"Smart EDU Contact Form" <ets.34.es@gmail.com>', // sender address
+      to: user.email, // list of receivers
+      subject: "Smart EDU - Enrolled Course Successfully ✔", // Subject line
+      html: outputMessage, // html body
+    });
     res.status(201).json({
       status: "success",
       user,

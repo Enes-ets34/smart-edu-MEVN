@@ -24,6 +24,8 @@ export default {
             commit("setUser", user);
             localStorage.user = JSON.stringify(user);
             router.push({ name: "Home" });
+          }else{
+            alert('ERROR')
           }
         })
         .catch((err) => console.error(err));
@@ -39,6 +41,9 @@ export default {
             commit("setUser", user);
             localStorage.user = JSON.stringify(user);
             router.push({ name: "Home" });
+          }
+          else{
+            alert('ERROR')
           }
         })
         .catch((err) => console.error(err));
