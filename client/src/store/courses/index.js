@@ -16,7 +16,6 @@ export default {
   },
   actions: {
     fetchCourses({ commit }, { categories, searchKey }) {
-
       let url = "/courses?";
       const IDs = categories
         .filter((c) => c.selected)
@@ -28,14 +27,14 @@ export default {
       if (searchKey) {
         url = `${url}&search=${searchKey}`;
       }
-    
+
       console.log("url :>> ", url);
 
       appAxios
         .get(url)
         .then((res) => {
           commit("setCourseList", res?.data?.courses);
-          console.log('res?.data?.courses :>> ', res?.data?.courses);
+          console.log("res?.data?.courses :>> ", res?.data?.courses);
         })
         .catch((err) => {
           console.error(err);
@@ -59,19 +58,23 @@ export default {
         });
     },
     enrollCourse({ commit }, pCourse) {
-      appAxios
-        .post(`/courses/enroll`, {
-          course_id: pCourse._id,
-          user_id: JSON.parse(localStorage.user)._id,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            router.push({ name: "Dashboard" });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      if (!localStorage.user) {
+        router.push({ name: "Login" });
+      } else {
+        appAxios
+          .post(`/courses/enroll`, {
+            course_id: pCourse._id,
+            user_id: JSON.parse(localStorage.user)._id,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              router.push({ name: "Dashboard" });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     },
     updateCourse({ commit }, pCourse) {
       appAxios

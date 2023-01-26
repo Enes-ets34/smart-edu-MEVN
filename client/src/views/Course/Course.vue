@@ -17,8 +17,10 @@
             <div class="card-body">
               <div class="card-title d-flex justify-content-between align-items-center">
                 <span class="text-muted"><i class="fa-solid fa-calendar-days"></i>  {{ createdAt }}</span>
-                <button v-if="hasEnrolled" @click="releaseCourse" class="btn btn-danger w-25">Release</button>
-                <button v-else @click="enrollCourse" class="btn btn-primary w-25">Enroll</button>
+                <span v-if="currentUser">
+                  <button v-if="hasEnrolled" @click="releaseCourse" class="btn btn-danger w-25">Release</button>
+                  <button v-else @click="enrollCourse" class="btn btn-primary w-25">Enroll</button>
+                </span>
               </div>
               <div class="card-title">
                 <h3>{{ course.title }} </h3>
