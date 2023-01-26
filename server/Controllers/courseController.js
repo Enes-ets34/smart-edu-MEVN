@@ -186,7 +186,7 @@ const enrollCourse = async (req, res) => {
       secure: true, // true for 465, false for other ports
         auth: {
         user: process.env.MAIL, // gmail account
-        pass: process.env.PASSOWRD, // gmail password
+        pass: process.env.PASSWORD, // gmail password
       },
     });
     let info = await transporter.sendMail({

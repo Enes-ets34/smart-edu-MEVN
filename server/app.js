@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
+const dotenv = require("dotenv");
 
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
@@ -15,10 +16,10 @@ const userRoutes = require("./routes/userRoutes");
 const app = express();
 
 const PORT = 3000;
-
+dotenv.config({ path: "./config/config.env" });
 //CONNECT DB
 mongoose
-  .connect("mongodb+srv://enes:qPkstnzIshv71EPS@cluster0.h6tl66y.mongodb.net/smartedu-db?retryWrites=true&w=majority")
+  .connect(process.env.DBURL)
   .then(() => {
     console.log("DB CONNECTED");
   })
@@ -41,7 +42,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: "mongodb+srv://enes:qPkstnzIshv71EPS@cluster0.h6tl66y.mongodb.net/smartedu-db?retryWrites=true&w=majority",
+      mongoUrl: process.env.DBURL,
     }),
   })
 );
