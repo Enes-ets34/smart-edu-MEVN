@@ -118,10 +118,7 @@ const getAllCourses = async (req, res) => {
         }),
     
       courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse);
-      (courses = [...flattenCourses].sort((a, b) => {
-        return b.created_at.getTime() - a.created_at.getTime();
-      })),
-        (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
+    
       console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
@@ -177,7 +174,7 @@ const enrollCourse = async (req, res) => {
 
   <h2 style='font-size:50px'>${course.title}</h2>
   <p style='font-size:25px'> ${course.description}</p>
-  <b> <a href='https://smartedu-ets.netlify.app/course/${course.slug}'>Click for get to the course.</a></b>
+  <b> <a href='https://smartedu-service.onrender.com/course/${course.slug}'>Click for get to the course.</a></b>
 
   `;
     let transporter = nodemailer.createTransport({
