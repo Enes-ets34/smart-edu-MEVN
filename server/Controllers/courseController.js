@@ -1,7 +1,7 @@
 const Category = require("../Models/Category");
 const Course = require("../Models/Course");
 const User = require("../Models/User");
-
+const slugify = require("slugify");
 const session = require("express-session");
 const nodemailer = require("nodemailer");
 
@@ -30,9 +30,14 @@ const updateCourse = async (req, res) => {
         description: req.body.description,
         category: req.body.category,
         img: req.body.img,
+        slug: slugify(req.body.title, {
+          lower: true,
+          strict: true,
+        }),
       },
       { returnOriginal: false }
     );
+    
     res.status(204).json({
       status: "success",
       course,
@@ -112,13 +117,11 @@ const getAllCourses = async (req, res) => {
       }
       let flattenCourses = [].concat.apply([], courses);
 
-      courses = 
-        [...flattenCourses].sort((a, b) => {
-          return b.created_at.getTime() - a.created_at.getTime();
-        }),
-    
-      courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse);
-    
+      (courses = [...flattenCourses].sort((a, b) => {
+        return b.created_at.getTime() - a.created_at.getTime();
+      })),
+        (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
+
       console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
@@ -181,13 +184,13 @@ const enrollCourse = async (req, res) => {
       host: "smtp.gmail.com",
       port: 465,
       secure: true, // true for 465, false for other ports
-        auth: {
+      auth: {
         user: process.env.MAIL, // gmail account
         pass: process.env.PASSWORD, // gmail password
       },
     });
     let info = await transporter.sendMail({
-   from: `"Smart EDU Contact Form" ${process.env.MAIL} `, // sender address
+      from: `"Smart EDU Contact Form" ${process.env.MAIL} `, // sender address
       to: user.email, // list of receivers
       subject: "Smart EDU - Enrolled Course Successfully ✔", // Subject line
       html: outputMessage, // html body
@@ -204,8 +207,6 @@ const enrollCourse = async (req, res) => {
   }
 };
 const releaseCourse = async (req, res) => {
-
-
   try {
     const user = await User.findById(req.body.user_id);
     delete user.password;
