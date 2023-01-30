@@ -46,6 +46,7 @@ build/Release
 node_modules/
 jspm_packages/
 
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
@@ -145,6 +146,7 @@ dist
 # Recommended template: Node.gitignore
 
 dist/
+config/
 npm-debug.log
 yarn-error.log
 

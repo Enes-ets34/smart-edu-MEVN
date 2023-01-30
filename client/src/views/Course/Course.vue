@@ -17,9 +17,11 @@
             <div class="card-body">
               <div class="card-title d-flex justify-content-between align-items-center">
                 <span class="text-muted"><i class="fa-solid fa-calendar-days"></i>  {{ createdAt }}</span>
-                 <button v-if="hasEnrolled" @click="releaseCourse" class="btn btn-danger w-25">Release</button>
-                <button v-if="!hasEnrolled && currentUser" @click="enrollCourse"
-                  class="btn btn-primary w-25">Enroll</button>
+                <button v-if="hasEnrolled" @click="releaseCourse" class="btn btn-danger w-25">Release</button>
+                <button :disabled="enrolling" v-if="!hasEnrolled" @click="enrollCourse" class="btn btn-primary w-25">
+                  <span v-if="!enrolling">Enroll</span>
+                  <span v-else>Enrolling...</span>
+                </button>
               </div>
               <div class="card-title">
                 <h3>{{ course.title }} </h3>
@@ -63,7 +65,8 @@ export default {
       course: {},
       carouselContent: {
       },
-      showAlert: false
+      showAlert: false,
+      enrolling: false
     }
   },
   created() {
@@ -83,18 +86,24 @@ export default {
   },
   methods: {
     enrollCourse() {
-      appAxios.post(`/courses/enroll`, {
-        user_id: this.currentUser._id,
-        course_id: this.course._id
-      })
-        .then(res => {
-          if (res.status === 201) {
-            localStorage.user = JSON.stringify(res?.data?.user)
-            this.$store.commit("users/setUser", res?.data?.user)
-            this.$router.push({ name: "Dashboard" })
-          }
+      this.enrolling = true
+      if (!this.currentUser) {
+        this.$router.push({ name: "Login" });
+      } else {
+        appAxios.post(`/courses/enroll`, {
+          user_id: this.currentUser._id,
+          course_id: this.course._id
         })
-        .catch(err => console.error(err))
+          .then(res => {
+            if (res.status === 201) {
+              localStorage.user = JSON.stringify(res?.data?.user)
+              this.$store.commit("users/setUser", res?.data?.user)
+              this.$router.push({ name: "Dashboard" })
+            }
+          })
+          .catch(err => console.error(err))
+      }
+
     },
     releaseCourse() {
       appAxios.post(`/courses/release`, {
@@ -124,7 +133,7 @@ export default {
       return !this.course?.teacher?.profile_img ? "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png" : this.course?.teacher?.profile_img
     },
     hasEnrolled() {
-      return Boolean(this.currentUser.courses.find(c => c === this.course._id))
+      return Boolean(this.currentUser?.courses.find(c => c === this.course?._id))
     },
 
   }

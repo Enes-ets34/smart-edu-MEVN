@@ -1,5 +1,6 @@
 import appAxios from "../../utils/appAxios";
 import router from "../../router";
+import user from "../users";
 
 export default {
   namespaced: true,
@@ -57,25 +58,6 @@ export default {
           console.error(err);
         });
     },
-    enrollCourse({ commit }, pCourse) {
-      if (!localStorage.user) {
-        router.push({ name: "Login" });
-      } else {
-        appAxios
-          .post(`/courses/enroll`, {
-            course_id: pCourse._id,
-            user_id: JSON.parse(localStorage.user)._id,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              router.push({ name: "Dashboard" });
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      }
-    },
     updateCourse({ commit }, pCourse) {
       appAxios
         .put(`/courses/${pCourse._id}`, {
@@ -92,7 +74,6 @@ export default {
         });
     },
   },
-  modules: {},
   getters: {
     getCourses: (state) => state.courseList,
     getLatestCourses: (state) => state.courseList.slice(0, 3),

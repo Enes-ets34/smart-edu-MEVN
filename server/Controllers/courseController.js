@@ -37,7 +37,7 @@ const updateCourse = async (req, res) => {
       },
       { returnOriginal: false }
     );
-    
+
     res.status(204).json({
       status: "success",
       course,
@@ -92,7 +92,6 @@ const getAllCourses = async (req, res) => {
         return b.created_at.getTime() - a.created_at.getTime();
       })),
         (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
-      console.log("courses :>> ", courses);
     } else if (!categorySlug && searchKey) {
       filter = { title: searchKey };
       courses = await Course.find({
@@ -121,8 +120,6 @@ const getAllCourses = async (req, res) => {
         return b.created_at.getTime() - a.created_at.getTime();
       })),
         (courses = [...new Set(courses.map(JSON.stringify))].map(JSON.parse));
-
-      console.log("courses :>> ", courses);
     } else {
       courses = await Course.find()
         .sort("-created_at")
