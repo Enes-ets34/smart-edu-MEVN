@@ -55,11 +55,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import Carousel from '../../components/shared/Carousel.vue'
-import appToast from '../../components/shared/appToast.vue'
+
 import appAxios from '../../utils/appAxios'
 
 export default {
-  components: { Carousel, appToast },
+  components: { Carousel },
   data() {
     return {
       course: {},
@@ -121,7 +121,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentUser: "users/getCurrentUser"
+      currentUser: "users/getCurrentUser",
+    
     }),
     courseImg() {
       return !this.course?.img ? "https://eticaretsozlugu.kobisi.com/wp-content/uploads/2018/02/code-1839406_1280-825x510.jpg" : this.course?.img

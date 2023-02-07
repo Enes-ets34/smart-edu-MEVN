@@ -10,16 +10,24 @@
                         <label for="full_name">Full Name</label>
                         <input v-model="userData.full_name" type="text" name="full_name" id="full_name"
                             placeholder="Enter Your Name..." class="form-control ">
+
                     </div>
                     <div class="mb-3">
                         <label for="email">Email</label>
                         <input v-model="userData.email" type="text" name="email" id="email"
                             placeholder="Enter Your Email" class="form-control ">
+                        <small v-if="!checkEmail" class="text-danger">Please enter an email.</small>
                     </div>
                     <div class="mb-3">
                         <label for="password">Password</label>
                         <input v-model="userData.password" type="password" name="password" id="password"
                             placeholder="*****" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password2">Password again</label>
+                        <input v-model="userData.password_2" type="password2" name="password2" id="password2"
+                            :class="{ 'border-danger': !samePassword }" placeholder="*****" class="form-control ">
+                        <small v-if="!samePassword" class="text-danger">Please check password.</small>
                     </div>
                     <div class="mb-3">
                         <label for="category">Role</label>
@@ -36,7 +44,7 @@
                     </div>
                 </div>
                 <div class="d-grid gap-2 mt-3">
-                    <button @click="register" class="btn btn-primary">
+                    <button :disabled="!isValidate" @click="register" class="btn btn-primary">
                         Register
                     </button>
                 </div>
@@ -55,12 +63,27 @@
 export default {
     data() {
         return {
-            userData: {}
+            userData: {
+                email:null
+            }
         }
     },
     methods: {
         register() {
             this.$store.dispatch("users/register", this.userData)
+        }
+    },
+    computed: {
+        isValidate() {
+            return ((this?.userData?.password?.length > 0 && this?.userData?.password_2?.length > 0) && (this?.userData?.email?.length > 0)
+             
+            )
+        },
+        samePassword() {
+            return (this?.userData?.password === this?.userData?.password_2)
+        },
+        checkEmail() {
+            return this?.userData?.email?.length > 0
         }
     }
 

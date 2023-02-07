@@ -16,9 +16,10 @@
                         <input v-model="userData.password" type="password" name="password" id="password"
                             placeholder="*****" class="form-control">
                     </div>
+
                 </div>
                 <div class="d-grid gap-2 mt-3">
-                    <button @click="login" class="btn btn-primary">
+                    <button :disabled="!isValidate" @click="login" class="btn btn-primary">
                         Login
                     </button>
                 </div>
@@ -41,6 +42,11 @@ export default {
     methods: {
         login() {
             this.$store.dispatch("users/login", this.userData)
+        }
+    },
+    computed: {
+        isValidate() {
+            return (this?.userData?.password?.length && this?.userData?.password?.length > 0) && (this?.userData?.email?.length && this?.userData?.email?.length > 0)
         }
     }
 

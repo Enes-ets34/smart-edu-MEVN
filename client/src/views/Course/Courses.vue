@@ -11,24 +11,30 @@
             </div>
             <Categories @select-category="selectCategories($event)" :categories="categories" />
           </div>
+        
           <div class="col-md-8">
-            <div v-if="courseList.length === 0" class="col-md-8 mx-auto alert alert-primary text-center">
-              <p class="display-6">there is no course for this category(ies) yet.</p>
-            </div>
-            <div class="row">
-              <div v-for="course in courseList" :key="course._id" class="col-md-5 d-flex align-self-stretch mb-3">
-                <Course-item :course="course">
-                  <template #footer>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <small class="d-flex justify-content-start align-items-center">
-                        <i class="fa-solid fa-chalkboard-user me-1"></i>{{ course?.teacher?.full_name }}
-                      </small>
-                      <small class="d-flex justify-content-start align-items-center">
-                        <i class="fa-solid fa-hashtag me-1"></i>{{ course.category.title }}
-                      </small>
-                    </div>
-                  </template>
-                </Course-item>
+            <appLoader v-if="loading" />
+            <div v-else>
+              <div v-if="courseList.length === 0" class="col-md-8 mx-auto alert alert-primary text-center">
+                <p class="display-6">there is no course for this category(ies) yet.</p>
+              </div>
+              <div class="row">
+
+                <div v-for="course in courseList" :key="course._id" class="col-md-5 d-flex align-self-stretch mb-3">
+
+                  <Course-item :course="course">
+                    <template #footer>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <small class="d-flex justify-content-start align-items-center">
+                          <i class="fa-solid fa-chalkboard-user me-1"></i>{{ course?.teacher?.full_name }}
+                        </small>
+                        <small class="d-flex justify-content-start align-items-center">
+                          <i class="fa-solid fa-hashtag me-1"></i>{{ course.category.title }}
+                        </small>
+                      </div>
+                    </template>
+                  </Course-item>
+                </div>
               </div>
             </div>
           </div>
@@ -48,9 +54,10 @@ import Carousel from '../../components/shared/Carousel.vue'
 import appAlert from '../../components/shared/appAlert.vue'
 import Categories from '../../components/courses/Categories.vue'
 import CourseItem from '../../components/courses/CourseItem.vue'
+import AppLoader from '../../components/shared/appLoader.vue'
 
 export default {
-  components: { Carousel, Categories, CourseItem },
+  components: { Carousel, Categories, CourseItem, AppLoader },
   data() {
     return {
       searchKey: null,
@@ -58,7 +65,8 @@ export default {
         header: "Courses",
         content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
         img: "https://static-assets.codecademy.com/components/curriculum/path/build-web-apps-with-react/curriculum-card.svg"
-      }
+      },
+
     }
   },
 
@@ -71,7 +79,8 @@ export default {
     ...mapGetters({
       categories: "categories/getCategories",
       courseList: "courses/getCourses",
-      selectedCategories: "categories/getSelectedCategories"
+      selectedCategories: "categories/getSelectedCategories",
+      loading: "loading"
     })
   },
   methods: {
