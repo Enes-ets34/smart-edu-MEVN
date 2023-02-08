@@ -1,6 +1,7 @@
 const User = require("../Models/User");
 const Course = require("../Models/Course");
 const CryptoJS = require("crypto-js");
+const { encryptedBase64 } = require("crypto-js");
 const session = require("express-session");
 const _saltKey = "passB!tch";
 
@@ -35,6 +36,7 @@ const login = async (req, res) => {
     }
     if (user.password === userData.password) {
       req.session.userID = user._id;
+   
 
       res.status(200).json({
         status: "success",
