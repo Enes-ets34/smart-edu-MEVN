@@ -15,27 +15,21 @@
                 <div class="col-md-4  d-none d-sm-block d-md-none d-lg-block ">
                     <img :src="carouselImg" alt="" class="img-fluid ">
                 </div>
-
             </div>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    props: {
-        carouselContent: {
-            type: Object,
-            required: true
-        },
-    },
-    computed: {
-        carouselImg() {
-            return !this.carouselContent.img ? `https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg` : this.carouselContent.img
-        }
+<script setup>
+import { defineProps, computed } from "vue";
+const props = defineProps({
+    carouselContent: {
+        type: Object,
     }
-
-}
+})
+const carouselImg = computed(() => {
+    return !props.carouselContent.img ? `https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg` : props.carouselContent.img
+})
 </script>
 
 <style scoped>

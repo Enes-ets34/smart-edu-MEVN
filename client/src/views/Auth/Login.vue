@@ -32,25 +32,23 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            userData: {}
-        }
-    },
-    methods: {
-        login() {
-            this.$store.dispatch("users/login", this.userData)
-        }
-    },
-    computed: {
-        isValidate() {
-            return (this?.userData?.password?.length && this?.userData?.password?.length > 0) && (this?.userData?.email?.length && this?.userData?.email?.length > 0)
-        }
-    }
+<script setup>
+import { reactive, computed } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore()
 
+const userData = reactive({})
+
+const login = () => {
+    store.dispatch("users/login", userData)
 }
+
+
+const isValidate = computed(() => {
+    return (userData?.password?.length && userData?.password?.length > 0) && (userData?.email?.length && userData?.email?.length > 0)
+})
+
+
 </script>
 
 <style>

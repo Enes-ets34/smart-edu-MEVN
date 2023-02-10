@@ -1,5 +1,6 @@
 <template>
     <nav v-if="!hider" class=" navbar navbar-expand-lg navbar-dark bg-primary">
+
         <div class="container">
             <router-link class="navbar-brand" to="/">SMART EDU</router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
@@ -10,7 +11,6 @@
                 <ul class="ms-auto navbar-nav ">
                     <li class="nav-item">
                         <router-link active-class="active" class="nav-link" to="/">Home
-
                         </router-link>
                     </li>
                     <li class="nav-item">
@@ -51,24 +51,24 @@
     </nav>
 </template>
 
-<script>
-import { mapGetters } from 'vuex';
+<script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from "vue-router";
+const store = useStore();
+const route = useRouter();
 
-export default {
-    computed: {
-        hider() {
-            return this.$route.name === 'Login' || this.$route.name === 'Register'
-        },
-        ...mapGetters({
-            currentUser: "users/getCurrentUser"
-        })
-    },
-    methods: {
-        logout() {
-            console.log("aloo");
-            this.$store.dispatch("users/logout")
-        }
-    }
+console.log('router :>> ', route.currentRoute.value);
+
+const hider = computed(() => {
+    return route.currentRoute.value.name === 'Login' || route.currentRoute.value.name === 'Register'
+})
+
+const currentUser = computed(() => store.getters["users/getCurrentUser"])
+
+const logout = () => {
+    console.log("aloo");
+    store.dispatch("users/logout")
 }
 </script>
 

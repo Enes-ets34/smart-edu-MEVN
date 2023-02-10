@@ -54,40 +54,26 @@
 
 
 
-<script>
-
-import { mapGetters } from 'vuex';
+<script setup>
+import { computed, reactive } from 'vue';
+import { useStore } from 'vuex';
 import Carousel from '../../components/shared/Carousel.vue';
 
-export default {
-    name: 'AddCourse',
-    components: {
-        Carousel
-    },
-    data() {
-        return {
-            carouselContent: {
-                header: "Add New Course",
-                content: `<i class='text-muted'>"Think different"</i>`,
-                img: "https://www.codecademy.com/_portal/_next/static/images/ReinforcementIllustration.45cf23df705823717193c4654a61033c.svg"
-            },
-            userData: {}
-        }
-    },
-    methods: {
-        addCourse() {
-            console.log('this.userData :>> ', this.userData);
-
-            this.$store.dispatch("courses/addCourse", this.userData)
-        }
-    },
-    computed: {
-        ...mapGetters({
-            categories: "categories/getCategories"
-        })
-
-    }
+const store = useStore()
+const carouselContent = reactive({
+    header: "Add New Course",
+    content: `<i class='text-muted'>"Think different"</i>`,
+    img: "https://www.codecademy.com/_portal/_next/static/images/ReinforcementIllustration.45cf23df705823717193c4654a61033c.svg"
+})
+const categories = computed(() => store.getters["categories/getCategories"])
+const userData = reactive({
+    title: null,
+    description: null,
+    img: null,
+    category: null
+})
+const addCourse = () => {
+    console.log('this.userData.value :>> ', userData);
+    store.dispatch("courses/addCourse", userData)
 }
-
-
 </script>

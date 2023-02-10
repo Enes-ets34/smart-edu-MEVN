@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button @click="$emit('updateCourse', editCourse)" type="button" class="btn btn-primary">Save
                         changes</button>
                 </div>
@@ -50,24 +50,18 @@
     </div>
 
 </template>
-<script>
-import { mapGetters } from 'vuex';
-
-
-export default {
-    props: {
+<script setup>
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore()
+const props = defineProps(
+    {
         editCourse: {
             type: Object,
-            required: true
         }
-    },
-    computed: {
-        ...mapGetters({
-            categories: "categories/getCategories"
-        })
-    },
-
-}
+    }
+)
+const categories = computed(() => store.getters["categories/getCategories"])
 </script>
 <style scoped>
 

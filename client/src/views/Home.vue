@@ -93,35 +93,31 @@
 
 </template>
 
-<script>
-import { mapGetters } from 'vuex';
+<script setup>
+
+import { reactive, computed } from 'vue';
+import { useStore } from 'vuex';
 import AppLoader from '../components/shared/appLoader.vue';
 import Carousel from '../components/shared/Carousel.vue'
-export default {
-  name: 'Home',
-  components: {
-    Carousel,
-    AppLoader
-  },
-  data() {
-    return {
-      carouselContent: {
-        header: "Smart Edu For You.",
-        content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
-        img: "https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg"
-      }
-    }
-  },
-  computed: {
-    ...mapGetters({
-      latestCourses: "courses/getLatestCourses",
-      currentUser: "users/getCurrentUser",
-      coursesCount: "courses/getCoursesCount",
-      loading: "loading"
-    })
-  },
-}
-</script>
-<style scoped>
 
-</style>
+const store = useStore()
+
+const carouselContent = reactive({
+  header: "Smart Edu For You.",
+  content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
+  img: "https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg"
+})
+
+
+
+const categories = computed(() => store.getters["categories/getCategories"])
+const fetchCategories = () => store.dispatch("categories/fetchCategories");
+const fetchCourses = () => store.dispatch("courses/fetchCourses", { categories: categories.value })
+fetchCategories()
+fetchCourses()
+
+const latestCourses = computed(() => store.getters["courses/getLatestCourses"])
+const coursesCount = computed(() => store.getters["courses/getCoursesCount"])
+const loading = computed(() => store.getters["loading"])
+</script>
+

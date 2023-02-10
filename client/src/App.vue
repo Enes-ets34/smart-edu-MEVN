@@ -1,33 +1,22 @@
 <template>
   <appNavbar name="appNavbar" />
+
   <div id="modalContent"></div>
   <router-view />
+
   <appFooter name="appFooter" />
 </template>
 
-<script>
-import { mapGetters } from 'vuex';
+<script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore()
 
 
+store.dispatch["categories/fetchCategories"];
+const categories = computed(() => store.getters["categories/getCategories"])
+store.dispatch["courses/fetchCourses", { categories: categories }]
 
-export default {
-  data() {
-    return {
-
-    };
-  },
-  created() {
-    this.$store.dispatch("courses/fetchCourses", { categories: this.categories })
-    this.$store.dispatch("categories/fetchCategories");
-
-  },
-  computed: {
-    ...mapGetters({
-      categories: "categories/getCategories"
-    })
-  }
-
-}
 </script>
 <style>
 .card {

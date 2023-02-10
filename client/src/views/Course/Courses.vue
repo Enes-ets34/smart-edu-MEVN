@@ -9,15 +9,16 @@
                 @keypress.enter="searchCourse"> <button class="btn btn-primary" @click="searchCourse"><i
                   class="fa-brands fa-searchengin"></i></button>
             </div>
-            <Categories @select-category="selectCategories($event)" :categories="categories" />
+            <Categories @select-category="selectCategories()" :categories="categories" />
           </div>
-        
+
           <div class="col-md-8">
             <appLoader v-if="loading" />
             <div v-else>
               <div v-if="courseList.length === 0" class="col-md-8 mx-auto alert alert-primary text-center">
                 <p class="display-6">there is no course for this category(ies) yet.</p>
               </div>
+
               <div class="row">
 
                 <div v-for="course in courseList" :key="course._id" class="col-md-5 d-flex align-self-stretch mb-3">
@@ -38,6 +39,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -46,52 +48,41 @@
   </div>
 </template>
 
-<script>
-
-import { mapGetters } from 'vuex'
+<script setup>
+import { ref, reactive, computed } from 'vue';
+import { useStore } from 'vuex';
 
 import Carousel from '../../components/shared/Carousel.vue'
 import appAlert from '../../components/shared/appAlert.vue'
 import Categories from '../../components/courses/Categories.vue'
 import CourseItem from '../../components/courses/CourseItem.vue'
-import AppLoader from '../../components/shared/appLoader.vue'
 
-export default {
-  components: { Carousel, Categories, CourseItem, AppLoader },
-  data() {
-    return {
-      searchKey: null,
-      carouselContent: {
-        header: "Courses",
-        content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
-        img: "https://static-assets.codecademy.com/components/curriculum/path/build-web-apps-with-react/curriculum-card.svg"
-      },
 
-    }
-  },
+const store = useStore()
 
-  created() {
-    this.$store.getters["categories/getSelectedCategories"]
-    this.$store.dispatch("courses/fetchCourses", { categories: this.categories, searchKey: this.searchKey })
-    this.$store.dispatch("categories/fetchCategories");
-  },
-  computed: {
-    ...mapGetters({
-      categories: "categories/getCategories",
-      courseList: "courses/getCourses",
-      selectedCategories: "categories/getSelectedCategories",
-      loading: "loading"
-    })
-  },
-  methods: {
-    selectCategories(e) {
-      this.$store.dispatch("courses/fetchCourses", { categories: this.selectedCategories, searchKey: this.searchKey });
-    },
-    searchCourse() {
-      this.$store.dispatch("courses/fetchCourses", { categories: this.selectedCategories, searchKey: this.searchKey });
-    }
-  }
+const searchKey = ref(null)
+const carouselContent = reactive({
+  header: "Courses",
+  content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
+  img: "https://static-assets.codecademy.com/components/curriculum/path/build-web-apps-with-react/curriculum-card.svg"
+})
+
+const categories = computed(() => store.getters["categories/getCategories"])
+const courseList = computed(() => store.getters["courses/getCourses"])
+const selectedCategories = computed(() => store.getters["categories/getSelectedCategories"])
+const loading = computed(() => store.getters["loading"])
+
+store.dispatch("courses/fetchCourses", { categories: categories.value, searchKey: searchKey.value })
+store.dispatch("categories/fetchCategories");
+
+const selectCategories = () => {
+  store.dispatch("courses/fetchCourses", { categories: selectedCategories.value, searchKey: searchKey.value });
 }
+const searchCourse = () => {
+  store.dispatch("courses/fetchCourses", { categories: selectedCategories.value, searchKey: searchKey.value });
+}
+
+
 </script>
 
 <style>

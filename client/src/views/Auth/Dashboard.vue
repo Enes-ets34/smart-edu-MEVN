@@ -9,7 +9,6 @@
                     <p v-else class="display-6">{{ currentUser.full_name }} Uploaded Courses</p>
                 </div>
                 <div class="row">
-
                     <div v-for="course in courses" :key="course._id" class="col-md-6 d-flex align-self-stretch my-2">
                         <CourseItem :course="course">
                             <template #footer>
@@ -25,17 +24,11 @@
                                     <button @click='deleteCourse(course)'
                                         class="btn btn-danger col-md-6">Delete</button>
                                 </div>
-
                             </template>
                         </CourseItem>
                     </div>
                 </div>
             </div>
-            <!-- <div v-if="!courses.length === 0" class="col-md-8 mx-auto">
-                <div class="alert alert-primary text-center">
-                    There is no course ):
-                </div>
-            </div> -->
         </div>
         <Teleport to="#modalContent">
             <EditCourseModal @updateCourse="updateCourse" :editCourse="editCourse" />
@@ -44,77 +37,68 @@
 
 
 </template>
-<script>
+<script setup>
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 
-import { mapGetters } from 'vuex';
 import CourseItem from '../../components/courses/CourseItem.vue';
 import Carousel from '../../components/shared/Carousel.vue';
 import EditCourseModal from '../../components/EditCourseModal.vue';
 import appAxios from '../../utils/appAxios';
-export default {
-    components: { Carousel, CourseItem, EditCourseModal },
-    data() {
-        return {
-            carouselContent: {
-                header: "Smart Edu For You.",
-                content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
-                img: "https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg"
-            },
-            courses: [],
-            editCourse: {}
+
+const store = useStore()
+const carouselContent = {
+    header: "Smart Edu For You.",
+    content: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo ullam quam placeat? Quod, adipisci autem?",
+    img: "https://www.codecademy.com/webpack/7f8fd6dd32aa8afc918a5cf6a9fe2933.svg"
+}
+
+const courses = ref([])
+const editCourse = ref({})
+console.log('editCourse :>> ', editCourse.value);
+
+const currentUser = computed(() => store.getters["users/getCurrentUser"])
+console.log('this.currentUser :>> ', currentUser.value);
+appAxios.get(`users/dashboard/${currentUser.value._id}`)
+    .then(res => {
+        if (currentUser.value.role === 'student') {
+            courses.value = res?.data?.user?.courses
+        } else {
+            courses.value = res?.data?.courses
         }
-    },
-    created() {
-        console.log('this.currentUser :>> ', this.currentUser);
-        appAxios.get(`users/dashboard/${this.currentUser._id}`)
-            .then(res => {
-                if (this.currentUser.role === 'student') {
-                    this.courses = res?.data?.user?.courses
-                } else {
-                    this.courses = res?.data?.courses
+    })
+    .catch(err => console.error(err))
+
+
+const updateCourse = (e) => {
+    store.dispatch("courses/updateCourse", e)
+}
+const deleteCourse = (e) => {
+    if (confirm("ARE YOU SURE?")) {
+        appAxios
+            .delete(`/courses/${e._id}`)
+            .then((res) => {
+                if (res?.status === 204) {
+                    courses.value = courses.value.filter(c => c._id !== e._id)
                 }
             })
-            .catch(err => console.error(err))
-    },
-    computed: {
-        ...mapGetters({
-            currentUser: "users/getCurrentUser"
-        }),
-
-    },
-    methods: {
-        updateCourse(e) {
-            this.$store.dispatch("courses/updateCourse", e)
-        },
-        deleteCourse(e) {
-            if (confirm("ARE YOU SURE?")) {
-                appAxios
-                    .delete(`/courses/${e._id}`)
-                    .then((res) => {
-                        if (res?.status === 204) {
-                            this.courses = this.courses.filter(c => c._id !== e._id)
-                        }
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                    });
-
-            }
-        },
-        releaseCourse(course) {
-            appAxios.post(`/courses/release`, {
-                user_id: this.currentUser._id,
-                course_id: course._id
-            })
-                .then(res => {
-                    if (res.status === 200) {
-                        localStorage.user = JSON.stringify(res?.data?.user)
-                        this.courses = this.courses.filter(c => c._id !== course._id)
-                    }
-                })
-                .catch(err => console.error(err))
-        }
+            .catch((err) => {
+                console.error(err);
+            });
     }
+}
+const releaseCourse = (course) => {
+    appAxios.post(`/courses/release`, {
+        user_id: currentUser.value._id,
+        course_id: course._id
+    })
+        .then(res => {
+            if (res.status === 200) {
+                localStorage.user = JSON.stringify(res?.data?.user)
+                courses.value = courses.value.filter(c => c._id !== course._id)
+            }
+        })
+        .catch(err => console.error(err))
 }
 
 

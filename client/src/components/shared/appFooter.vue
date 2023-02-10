@@ -73,18 +73,21 @@
     </div>
 </template>
 
-<script>
-export default {
-    computed: {
-        hider() {
-            return this.$route.name === 'Login' || this.$route.name === 'Register'
-        }
-    }
-}
+<script setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+const route = useRouter();
+
+console.log('router :>> ', route.currentRoute.value.name);
+const hider = computed(() => {
+    return route.currentRoute.value.name === 'Login' || route.currentRoute.value.name === 'Register'
+})
+
 </script>
 
 <style scoped>
-a:hover,h1:hover {
+a:hover,
+h1:hover {
     color: #593196 !important;
     transition: all 1s;
 }

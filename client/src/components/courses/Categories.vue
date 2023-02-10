@@ -10,25 +10,22 @@
 
 </template>
 
-<script>
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 import CategoryItem from './CategoryItem.vue';
+const emit = defineEmits()
+const props = defineProps({
+    categories: {
+        type: Array,
+        required: true
+    }
+})
 
-
-
-export default {
-    props: {
-        categories: {
-            type: Array,
-            required: true
-        }
-    },
-    methods: {
-        selectedCategories(e) {
-            this.$emit("select-category", this.categories);
-        }
-    },
-    components: { CategoryItem }
+const selectedCategories = () => {
+    emit("select-category", props.categories);
 }
+
+
 </script>
 
 <style>

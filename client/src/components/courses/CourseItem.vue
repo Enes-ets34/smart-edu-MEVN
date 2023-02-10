@@ -33,8 +33,6 @@
 </template>
 
 <script>
-
-
 export default {
     props: {
         course: {
