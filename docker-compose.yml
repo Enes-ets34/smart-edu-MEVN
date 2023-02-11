@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  client:
+    build: ./client
+    ports:
+      - 8080:8080
+    container_name: smartedu-client
+  server:
+    container_name: smartedu-server
+    build: ./server
+    ports:
+      - 4000:3000
+    volumes:
+      - smartedu-server-data:/data/db
+volumes:
+  smartedu-server-data:
