@@ -10,7 +10,3 @@ services:
     build: ./server
     ports:
       - 4000:3000
-    volumes:
-      - smartedu-server-data:/data/db
-volumes:
-  smartedu-server-data:

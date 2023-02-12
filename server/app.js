@@ -15,11 +15,14 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-const PORT = 3000;
 dotenv.config({ path: "./config/config.env" });
+
+
+const PORT = process.env.PORT || 3000;
 //CONNECT DB
 mongoose
-  .connect(process.env.DBURL)
+   .connect(process.env.DBURL)
+  // .connect('mongodb://mongo-alias:27017/smart-edu-test')
   .then(() => {
     console.log("DB CONNECTED");
   })
