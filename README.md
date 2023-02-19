@@ -1,8 +1,8 @@
-#[click for live](https://smartedu-ets.netlify.app/)
+# [click for live](https://smartedu-ets.netlify.app/)
 
 
 
-#SmartEdu
+# SmartEdu
 SmartEdu is a education portal, teachers and admins can add courses and students can enroll those courses.
 
 ## Compiles and hot-reloads for development
