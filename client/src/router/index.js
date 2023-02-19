@@ -20,9 +20,7 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     components: {
       default: () =>
         import(/* webpackChunkName: "about" */ "../views/About.vue"),
@@ -33,9 +31,7 @@ const routes = [
   {
     path: "/course/:slug",
     name: "Course",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     components: {
       default: () =>
         import(/* webpackChunkName: "about" */ "../views/Course/Course.vue"),
@@ -46,9 +42,7 @@ const routes = [
   {
     path: "/courses",
     name: "Courses",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     components: {
       default: () =>
         import(/* webpackChunkName: "about" */ "../views/Course/Courses.vue"),
@@ -59,9 +53,7 @@ const routes = [
   {
     path: "/add-course",
     name: "AddCourse",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     components: {
       default: () =>
         import(/* webpackChunkName: "about" */ "../views/Course/AddCourse.vue"),
@@ -70,27 +62,21 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Auth/Login.vue"),
   },
   {
     path: "/register",
     name: "Register",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Auth/Register.vue"),
   },
   {
     path: "/dashboard",
     name: "Dashboard",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Auth/Dashboard.vue"),
   },
@@ -106,30 +92,35 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  // Define an array of pages that require authentication to access
   const authenticatedPages = ["Dashboard", "Profile", "AddCourse"];
+  // Define an array of user roles that are allowed to access certain pages
   const roles = ["admin", "teacher"];
+  // Initialize user to null
   let user = null;
-
-
-  
+  // If the user is stored in localStorage, set the user variable to the stored value
   if (localStorage?.user) {
     user = JSON.parse(localStorage?.user);
   }
+  // If the user object is valid, commit it to the store
   if (isObject(user)) {
     store.commit("users/setUser", user);
   }
-
+  // Check if the user is authenticated
   const isAuth = store.getters["users/isAuth"];
+  // If the user is not authenticated and they are trying to access an authenticated page, redirect them to the login page
   if (!isAuth && authenticatedPages.indexOf(to.name) > -1) {
     next({ name: "Login" });
   }
+  // If the user is not authenticated and they are trying to access the AddCourse page, redirect them to the login page
   if (!isAuth && to.name === "AddCourse") {
     next({ name: "Login" });
   }
- 
+  // If the user is authenticated and they are trying to access the Login or Register page, redirect them to the Home page
   if ((isAuth && to.name === "Login") || (isAuth && to.name === "Register")) {
     next({ name: "Home" });
   }
+  // If the user is authenticated and they are trying to access any other page, allow them to proceed
   next();
 });
 

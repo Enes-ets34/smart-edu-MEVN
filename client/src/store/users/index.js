@@ -1,19 +1,24 @@
 import appAxios from "../../utils/appAxios";
 import router from "../../router";
+
 export default {
+  // create a namespaced module for better encapsulation
   namespaced: true,
   state: {
     user: null,
   },
   mutations: {
+    // set the current user
     setUser(state, pUser) {
       state.user = pUser;
     },
+    // clear the current user
     clearUser(state) {
       state.user = null;
     },
   },
   actions: {
+    // register a new user
     register({ commit }, pUser) {
       appAxios
         .post("/users/signup", pUser)
@@ -24,12 +29,13 @@ export default {
             commit("setUser", user);
             localStorage.user = JSON.stringify(user);
             router.push({ name: "Home" });
-          }else{
-            alert('ERROR')
+          } else {
+            alert("ERROR");
           }
         })
         .catch((err) => console.error(err));
     },
+    // log in the user
     login({ commit }, pUser) {
       appAxios
         .post("/users/login", pUser)
@@ -41,13 +47,13 @@ export default {
             commit("setUser", user);
             localStorage.user = JSON.stringify(user);
             router.push({ name: "Home" });
-          }
-          else{
-            alert('ERROR')
+          } else {
+            alert("ERROR");
           }
         })
         .catch((err) => console.error(err));
     },
+    // log out the user
     logout({ commit }) {
       appAxios
         .get("/users/logout")
@@ -63,7 +69,9 @@ export default {
   },
   modules: {},
   getters: {
+    // get the current user
     getCurrentUser: (state) => state.user,
+    // check if the user is authenticated
     isAuth: (state) => state.user !== null,
   },
 };

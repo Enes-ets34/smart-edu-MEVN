@@ -1,7 +1,8 @@
+// Import the Category model
 const Category = require("../Models/Category");
 
+// Create a new category
 const createCategory = async (req, res) => {
-
   try {
     const category = await Category.create(req.body);
     res.status(201).json({
@@ -15,6 +16,8 @@ const createCategory = async (req, res) => {
     });
   }
 };
+
+// Get all categories
 const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find();
@@ -30,6 +33,7 @@ const getAllCategories = async (req, res) => {
   }
 };
 
+// Export the functions
 module.exports = {
   createCategory,
   getAllCategories,

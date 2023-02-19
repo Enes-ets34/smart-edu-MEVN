@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 const CryptoJS = require("crypto-js");
+
+// Set salt key to be used in password hashing
 const _saltKey = "passB!tch";
 
 const userSchema = new Schema({
@@ -24,11 +25,12 @@ const userSchema = new Schema({
     },
   ],
 });
+
+// Hash user's password with salt key before saving
 userSchema.pre("validate", function (next) {
   if (!this.isModified("password")) return next();
   const user = this;
   user.password = CryptoJS.HmacSHA1(user.password, _saltKey).toString();
-
   next();
 });
 

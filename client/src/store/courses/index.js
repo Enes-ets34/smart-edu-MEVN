@@ -1,6 +1,5 @@
 import appAxios from "../../utils/appAxios";
 import router from "../../router";
-import user from "../users";
 
 export default {
   namespaced: true,
@@ -17,6 +16,7 @@ export default {
   },
   actions: {
     fetchCourses({ commit }, { categories, searchKey }) {
+      // Build the URL for the API call based on the selected categories and search key
       let url = "/courses?";
       const IDs = categories
         .filter((c) => c.selected)
@@ -31,9 +31,11 @@ export default {
 
       console.log("url :>> ", url);
 
+      // Call the API to fetch the courses
       appAxios
         .get(url)
         .then((res) => {
+          // If successful, update the state with the fetched courses
           commit("setCourseList", res?.data?.courses);
           console.log("res?.data?.courses :>> ", res?.data?.courses);
         })
@@ -42,6 +44,7 @@ export default {
         });
     },
     addCourse({ commit }, pCourse) {
+      // Call the API to add a new course
       appAxios
         .post("/courses", {
           ...pCourse,
@@ -50,6 +53,7 @@ export default {
         })
         .then((res) => {
           if (res.status === 201) {
+            // If successful, navigate to the courses page and update the state with the added course
             router.push({ name: "Courses" });
             commit("addCourse", res.data.course);
           }
@@ -59,6 +63,7 @@ export default {
         });
     },
     updateCourse({ commit }, pCourse) {
+      // Call the API to update an existing course
       appAxios
         .put(`/courses/${pCourse._id}`, {
           ...pCourse,
@@ -66,6 +71,7 @@ export default {
         })
         .then((res) => {
           if (res.status === 204) {
+            // If successful, reload the page to show the updated course
             location.reload();
           }
         })
@@ -75,8 +81,11 @@ export default {
     },
   },
   getters: {
+    // Get all the courses
     getCourses: (state) => state.courseList,
+    // Get latest courses
     getLatestCourses: (state) => state.courseList.slice(0, 3),
+    // Get all courses count
     getCoursesCount: (state) => state.courseList.length,
   },
 };

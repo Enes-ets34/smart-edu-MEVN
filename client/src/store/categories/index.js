@@ -6,6 +6,7 @@ export default {
     categories: [],
   },
   mutations: {
+    // Set the categories and their selection status
     setCategories(state, pCategories) {
       state.categories = pCategories.map((c) => {
         return {
@@ -16,6 +17,7 @@ export default {
     },
   },
   actions: {
+    // Fetch the categories from the API
     fetchCategories({ commit }) {
       appAxios
         .get("/categories")
@@ -26,7 +28,9 @@ export default {
     },
   },
   getters: {
+    // Get all the categories
     getCategories: (state) => state.categories,
+    // Get the selected categories
     getSelectedCategories: (state) =>
       state.categories.filter((c) => c.selected),
   },
