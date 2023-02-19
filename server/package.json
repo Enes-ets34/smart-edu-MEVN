@@ -23,8 +23,7 @@
     "express-session": "^1.17.3",
     "mongoose": "^6.8.2",
     "nodemailer": "^6.9.0",
-    "slugify": "^1.6.5",
-    "socket.io": "^4.6.0"
+    "slugify": "^1.6.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

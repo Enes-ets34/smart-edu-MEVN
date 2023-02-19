@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-const socket = io("http://localhost:3000");
+
 import { reactive, computed } from 'vue';
 import { useStore } from 'vuex';
 import AppLoader from '../components/shared/appLoader.vue';
