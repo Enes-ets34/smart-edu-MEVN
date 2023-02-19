@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
+const socketio = require("socket.io");
 const dotenv = require("dotenv");
+const http = require("http");
 
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
@@ -17,11 +19,18 @@ const app = express();
 
 dotenv.config({ path: "./config/config.env" });
 
+const server = http.createServer(app);
 
+const io = socketio(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS"]
+  }
+});
 const PORT = process.env.PORT || 3000;
 //CONNECT DB
 mongoose
-   .connect(process.env.DBURL)
+  .connect(process.env.DBURL)
   // .connect('mongodb://mongo-alias:27017/smart-edu-test')
   .then(() => {
     console.log("DB CONNECTED");
@@ -55,5 +64,17 @@ app.use("/categories", categoryRoutes);
 app.use("/users", userRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server Is Runnig at ${PORT}`);
+  console.log(`APP RUNNING AT ${PORT}`);
+  io.on("connection", (socket) => {
+    console.log("HOPPAAAAAAAA");
+    console.log(socket.id);
+    //! Karşılama Mesajı Gönder...
+    // io.in(roomID).emit()
+ 
+    socket.on("NEW_COURSE_EVENT", (course) => {
+      console.log("course :>> ", course);
+      
+      socket.broadcast.emit("NEW_COURSE_ADDED", course);
+    });
+  });
 });

@@ -1,6 +1,7 @@
 import appAxios from "../../utils/appAxios";
 import router from "../../router";
-import user from "../users";
+import io from "socket.io-client";
+const socket = io("http://localhost:3000");
 
 export default {
   namespaced: true,
@@ -42,6 +43,9 @@ export default {
         });
     },
     addCourse({ commit }, pCourse) {
+      // socket.emit("NEW_COURSE_EVENT", res.data.course);
+      socket.emit("NEW_COURSE_EVENT", pCourse);
+      return false;
       appAxios
         .post("/courses", {
           ...pCourse,
