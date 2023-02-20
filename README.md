@@ -1,4 +1,5 @@
-# [click for live](https://smartedu-ets.netlify.app/)
+
+# [Click for live](https://smartedu-ets.netlify.app/)
 
 
 
@@ -6,6 +7,14 @@
 SmartEdu is a education portal, teachers and admins can add courses and students can enroll those courses.
 
 ## Compiles and hot-reloads for development
+
+### Getting Started
+- Clone this repo
+- Create MongoDb Cluster and Get Connection MongoDb URI
+- Set environment variables in `config.env` under `./server/config`
+  * Set `DBURL = <YOUR_MONGO_URI>`
+  * Set `EMAIL = <YOUR_GMAIL_EMAIL>`
+  * Set `PASSWORD=<YOUR_GMAIL_PASSWORD>`
 
 ```bash
 $ cd server
@@ -77,3 +86,9 @@ npm run serve
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# Smart-Edu-MEVN
+
+
+[click for live](https://smartedu-ets.netlify.app/)
+
